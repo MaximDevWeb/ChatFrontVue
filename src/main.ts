@@ -5,7 +5,7 @@ import Pusher from 'pusher-js/with-encryption';
 import App from './App.vue';
 import router from './router';
 
-import './assets/main.css';
+import './assets/styles/app.scss';
 
 const app = createApp(App);
 
