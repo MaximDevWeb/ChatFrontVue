@@ -4,6 +4,27 @@ import CLogo from '../../../../src/components/ui/cLogo.vue';
 import CInput from '../../../../src/components/ui/cInput.vue';
 import CCheckBox from '../../../../src/components/ui/cCheckBox.vue';
 import CButton from '../../../../src/components/ui/cButton.vue';
+import { reactive } from 'vue';
+
+interface Form {
+    login: string;
+    email: string;
+    password: string;
+    password_confirm: string;
+    submit: boolean;
+}
+
+const form: Form = reactive({
+    login: '',
+    email: '',
+    password: '',
+    password_confirm: '',
+    submit: true,
+});
+
+function submitForm() {
+    console.log(form);
+}
 </script>
 
 <template>
@@ -15,7 +36,12 @@ import CButton from '../../../../src/components/ui/cButton.vue';
         </p>
 
         <div class="mt-4">
-            <c-input id="login" label="Логин" placeholder="master_yoda" />
+            <c-input
+                id="login"
+                label="Логин"
+                placeholder="master_yoda"
+                v-model="form.login"
+            />
         </div>
 
         <div class="mt-4">
@@ -23,6 +49,7 @@ import CButton from '../../../../src/components/ui/cButton.vue';
                 id="email"
                 label="E-mail"
                 placeholder="master_yoda@jedi.com"
+                v-model="form.email"
             />
         </div>
 
@@ -32,6 +59,7 @@ import CButton from '../../../../src/components/ui/cButton.vue';
                 type="password"
                 label="Пароль"
                 placeholder="master_yoda_pass"
+                v-model="form.password"
             />
         </div>
 
@@ -41,11 +69,12 @@ import CButton from '../../../../src/components/ui/cButton.vue';
                 type="password"
                 label="Повторите пароль"
                 placeholder="master_yoda_pass"
+                v-model="form.password_confirm"
             />
         </div>
 
         <div class="mt-4">
-            <c-check-box id="remember">
+            <c-check-box id="submit" v-model="form.submit">
                 Я принимаю условия
                 <router-link to="/contract" class="link">
                     пользовательского соглашения
@@ -54,10 +83,10 @@ import CButton from '../../../../src/components/ui/cButton.vue';
         </div>
 
         <div class="mt-4">
-            <c-button>Зарегистрироваться</c-button>
+            <c-button @click="submitForm">Зарегистрироваться</c-button>
         </div>
 
-        <div class="mt-8 leading-5 auth__desc">
+        <div class="mt-8 leading-5 auth__desc text-center">
             Есть аккаунт.
             <router-link to="/auth" class="link"> Страница входа </router-link>
         </div>

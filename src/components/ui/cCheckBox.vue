@@ -4,11 +4,22 @@ defineProps({
         type: String,
         require: true,
     },
+    modelValue: {
+        type: Boolean,
+    },
 });
+
+defineEmits(['update:modelValue']);
 </script>
 
 <template>
-    <input class="checkbox" type="checkbox" :id="id" />
+    <input
+        class="checkbox"
+        type="checkbox"
+        :id="id"
+        :checked="modelValue"
+        @change="$emit('update:modelValue', $event.target.checked)"
+    />
 
     <label class="checkbox__label leading-5" :for="id">
         <slot></slot>

@@ -20,7 +20,12 @@ defineProps({
     error: {
         type: String,
     },
+    modelValue: {
+        type: String,
+    },
 });
+
+defineEmits(['update:modelValue']);
 </script>
 
 <template>
@@ -36,6 +41,8 @@ defineProps({
         class="input rounded-md"
         :class="{ input_error: error }"
         :placeholder="placeholder"
+        :value="modelValue"
+        @input="$emit('update:modelValue', $event.target.value)"
     />
 </template>
 

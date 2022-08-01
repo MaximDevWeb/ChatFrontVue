@@ -4,6 +4,23 @@ import CLogo from '../../../../src/components/ui/cLogo.vue';
 import CInput from '../../../../src/components/ui/cInput.vue';
 import CCheckBox from '../../../../src/components/ui/cCheckBox.vue';
 import CButton from '../../../../src/components/ui/cButton.vue';
+import { reactive } from 'vue';
+
+interface Form {
+    login: string;
+    password: string;
+    remember: boolean;
+}
+
+const form: Form = reactive({
+    login: '',
+    password: '',
+    remember: true,
+});
+
+function submitForm() {
+    console.log(form);
+}
 </script>
 
 <template>
@@ -15,7 +32,12 @@ import CButton from '../../../../src/components/ui/cButton.vue';
         </p>
 
         <div class="mt-4">
-            <c-input id="login" label="Логин" placeholder="master_yoda" />
+            <c-input
+                id="login"
+                label="Логин"
+                placeholder="master_yoda"
+                v-model="form.login"
+            />
         </div>
 
         <div class="mt-3">
@@ -24,18 +46,21 @@ import CButton from '../../../../src/components/ui/cButton.vue';
                 type="password"
                 label="Пароль"
                 placeholder="master_yoda_pass"
+                v-model="form.password"
             />
         </div>
 
         <div class="mt-4">
-            <c-check-box id="remember">Запомнить меня</c-check-box>
+            <c-check-box id="remember" v-model="form.remember">
+                Запомнить меня
+            </c-check-box>
         </div>
 
         <div class="mt-4">
-            <c-button>Войти</c-button>
+            <c-button @click="submitForm">Войти</c-button>
         </div>
 
-        <div class="mt-8 leading-5 auth__desc">
+        <div class="mt-8 leading-5 text-center auth__desc">
             Нет аккаунта.
             <router-link to="/auth/register" class="link">
                 Создайте новый

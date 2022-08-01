@@ -7,6 +7,9 @@ const main = [
                 path: '',
                 name: 'home',
                 component: () => import('../../views/pages/main/Home.vue'),
+                meta: {
+                    title: 'Главная страница',
+                },
             },
         ],
     },
