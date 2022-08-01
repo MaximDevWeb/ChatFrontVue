@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import CPanel from '../../../../src/components/ui/cPanel.vue';
-import CLogo from '../../../../src/components/ui/cLogo.vue';
-import CInput from '../../../../src/components/ui/cInput.vue';
-import CCheckBox from '../../../../src/components/ui/cCheckBox.vue';
-import CButton from '../../../../src/components/ui/cButton.vue';
+import CPanel from '@/components/ui/cPanel.vue';
+import CLogo from '@/components/ui/cLogo.vue';
+import CInput from '@/components/ui/cInput.vue';
+import CCheckBox from '@/components/ui/cCheckBox.vue';
+import CButton from '@/components/ui/cButton.vue';
 import { reactive } from 'vue';
 
 interface Form {

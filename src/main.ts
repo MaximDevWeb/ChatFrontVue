@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-import Pusher from 'pusher-js/with-encryption';
+
+import pusher from 'pusher-js/with-encryption';
 
 import App from './App.vue';
 import router from './router';

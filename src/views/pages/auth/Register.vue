@@ -1,29 +1,47 @@
 <script setup lang="ts">
-import CPanel from '../../../../src/components/ui/cPanel.vue';
-import CLogo from '../../../../src/components/ui/cLogo.vue';
-import CInput from '../../../../src/components/ui/cInput.vue';
-import CCheckBox from '../../../../src/components/ui/cCheckBox.vue';
-import CButton from '../../../../src/components/ui/cButton.vue';
-import { reactive } from 'vue';
+import CPanel from '@/components/ui/cPanel.vue';
+import CLogo from '@/components/ui/cLogo.vue';
+import CInput from '@/components/ui/cInput.vue';
+import CCheckBox from '@/components/ui/cCheckBox.vue';
+import CButton from '@/components/ui/cButton.vue';
+import { reactive, ref } from 'vue';
+import type { Ref } from 'vue';
+import { http } from '@/bootstrap/http';
 
 interface Form {
     login: string;
     email: string;
     password: string;
-    password_confirm: string;
+    password_confirmation: string;
     submit: boolean;
+}
+
+interface Errors {
+    login?: Array<string>;
+    email?: Array<string>;
+    password?: Array<string>;
+    password_confirmation?: Array<string>;
+    submit?: Array<string>;
 }
 
 const form: Form = reactive({
     login: '',
     email: '',
     password: '',
-    password_confirm: '',
+    password_confirmation: '',
     submit: true,
 });
 
+let errors: Ref<Errors> = ref({});
+
 function submitForm() {
-    console.log(form);
+    http.post('auth/create', form)
+        .then((response) => {
+            console.log(response);
+        })
+        .catch((error) => {
+            errors.value = error.response.data.errors ?? {};
+        });
 }
 </script>
 
@@ -41,6 +59,7 @@ function submitForm() {
                 label="Логин"
                 placeholder="master_yoda"
                 v-model="form.login"
+                :error="errors.login?.shift()"
             />
         </div>
 
@@ -50,6 +69,7 @@ function submitForm() {
                 label="E-mail"
                 placeholder="master_yoda@jedi.com"
                 v-model="form.email"
+                :error="errors.email?.shift()"
             />
         </div>
 
@@ -60,6 +80,7 @@ function submitForm() {
                 label="Пароль"
                 placeholder="master_yoda_pass"
                 v-model="form.password"
+                :error="errors.password?.shift()"
             />
         </div>
 
@@ -69,12 +90,17 @@ function submitForm() {
                 type="password"
                 label="Повторите пароль"
                 placeholder="master_yoda_pass"
-                v-model="form.password_confirm"
+                v-model="form.password_confirmation"
+                :error="errors.password_confirmation?.shift()"
             />
         </div>
 
         <div class="mt-4">
-            <c-check-box id="submit" v-model="form.submit">
+            <c-check-box
+                id="submit"
+                v-model="form.submit"
+                :error="errors.submit?.shift()"
+            >
                 Я принимаю условия
                 <router-link to="/contract" class="link">
                     пользовательского соглашения

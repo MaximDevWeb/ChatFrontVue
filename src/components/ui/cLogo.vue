@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import logo from '../../../src/assets/images/logo.svg';
+import logo from '@/assets/images/logo.svg';
 import { computed } from 'vue';
 
 const props = defineProps({

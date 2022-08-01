@@ -7,6 +7,9 @@ defineProps({
     modelValue: {
         type: Boolean,
     },
+    error: {
+        type: String,
+    },
 });
 
 defineEmits(['update:modelValue']);
@@ -14,14 +17,18 @@ defineEmits(['update:modelValue']);
 
 <template>
     <input
-        class="checkbox"
         type="checkbox"
+        class="checkbox"
         :id="id"
         :checked="modelValue"
         @change="$emit('update:modelValue', $event.target.checked)"
     />
 
-    <label class="checkbox__label leading-5" :for="id">
+    <label
+        class="checkbox__label leading-5"
+        :class="{ checkbox__label_error: error }"
+        :for="id"
+    >
         <slot></slot>
     </label>
 </template>
@@ -44,6 +51,7 @@ defineEmits(['update:modelValue']);
         width: 20px;
         height: 20px;
         background-color: variable.$black-white;
+        border: 1px solid variable.$black-white;
         border-radius: 0.25rem;
     }
 
@@ -57,6 +65,12 @@ defineEmits(['update:modelValue']);
         background-color: white;
         border-radius: 0.125rem;
         opacity: 0;
+    }
+}
+
+.checkbox__label_error {
+    &:before {
+        border: 1px solid variable.$red;
     }
 }
 
