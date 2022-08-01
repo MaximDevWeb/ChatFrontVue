@@ -1,0 +1,19 @@
+@use 'variable';
+
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;400;800&display=swap');
+
+#app {
+    background-color: variable.$dark-grey;
+    min-height: 100vh;
+    font-family: 'Raleway', sans-serif;
+    color: white;
+}
+
+a.link {
+    color: variable.$blue;
+    transition: all 0.3s;
+
+    &:hover {
+        color: white;
+    }
+}

@@ -1,7 +1,15 @@
 <script setup lang="ts"></script>
 
 <template>
-    <h3>Auth Layout</h3>
-
-    <router-view />
+    <div class="flex items-center justify-center h-screen">
+        <router-view></router-view>
+    </div>
 </template>
+
+<style lang="scss">
+@use '../src/assets/styles/variable';
+
+.auth__desc {
+    color: variable.$black-white;
+}
+</style>
