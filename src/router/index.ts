@@ -9,4 +9,9 @@ const router = createRouter({
     routes: [...auth, ...main],
 });
 
+router.afterEach((to) => {
+    const postfix: string = import.meta.env.VITE_TITLE_PREFIX;
+    document.title = to.meta.title + postfix;
+});
+
 export default router;
