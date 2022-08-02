@@ -7,14 +7,14 @@ import CButton from '@/components/ui/cButton.vue';
 import { reactive, ref } from 'vue';
 import type { Ref } from 'vue';
 import { http } from '@/bootstrap/http';
-import type { Form, Errors } from '@/interfaces/auth';
+import type { FormRegister, Errors } from '@/interfaces/auth';
 import { useToastStore } from '@/stores/toast';
 import { useRouter } from 'vue-router';
 
 const toastStore = useToastStore();
 const router = useRouter();
 
-const form: Form = reactive({
+const form: FormRegister = reactive({
     login: '',
     email: '',
     password: '',

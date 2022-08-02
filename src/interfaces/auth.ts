@@ -1,10 +1,16 @@
 export interface Form {
     login: string;
     password: string;
-    password_confirmation?: string;
-    email?: string;
-    submit?: boolean;
-    remember?: boolean;
+}
+
+export interface FormLogin extends Form {
+    remember: boolean;
+}
+
+export interface FormRegister extends Form {
+    password_confirmation: string;
+    email: string;
+    submit: boolean;
 }
 
 export interface Errors {

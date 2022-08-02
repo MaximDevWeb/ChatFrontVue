@@ -5,9 +5,9 @@ import CInput from '@/components/ui/cInput.vue';
 import CCheckBox from '@/components/ui/cCheckBox.vue';
 import CButton from '@/components/ui/cButton.vue';
 import { reactive } from 'vue';
-import type { Form, Errors } from '@/interfaces/auth';
+import type { FormLogin, Errors } from '@/interfaces/auth';
 
-const form: Form = reactive({
+const form: FormLogin = reactive({
     login: '',
     password: '',
     remember: true,
