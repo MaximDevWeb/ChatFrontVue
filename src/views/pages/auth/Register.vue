@@ -7,22 +7,12 @@ import CButton from '@/components/ui/cButton.vue';
 import { reactive, ref } from 'vue';
 import type { Ref } from 'vue';
 import { http } from '@/bootstrap/http';
+import type { Form, Errors } from '@/interfaces/auth';
+import { useToastStore } from '@/stores/toast';
+import { useRouter } from 'vue-router';
 
-interface Form {
-    login: string;
-    email: string;
-    password: string;
-    password_confirmation: string;
-    submit: boolean;
-}
-
-interface Errors {
-    login?: Array<string>;
-    email?: Array<string>;
-    password?: Array<string>;
-    password_confirmation?: Array<string>;
-    submit?: Array<string>;
-}
+const toastStore = useToastStore();
+const router = useRouter();
 
 const form: Form = reactive({
     login: '',
@@ -36,8 +26,13 @@ let errors: Ref<Errors> = ref({});
 
 function submitForm() {
     http.post('auth/create', form)
-        .then((response) => {
-            console.log(response);
+        .then(() => {
+            toastStore.addToast({
+                title: 'Успешно',
+                message: 'Аккаунт создан, войдите чтобы продолжить',
+            });
+
+            router.push('/auth');
         })
         .catch((error) => {
             errors.value = error.response.data.errors ?? {};
