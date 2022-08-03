@@ -1,8 +1,13 @@
 import axios from 'axios';
 
-export const http = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
-    headers: {
-        Authorization: 'Bearer {token}',
-    },
-});
+const tokenName: string = import.meta.env.VITE_TOKEN_NAME;
+const token: string | null = localStorage.getItem(tokenName);
+
+const http = axios.create();
+
+http.defaults.baseURL = import.meta.env.VITE_API_URL;
+http.defaults.headers.common['Authorization'] = token
+    ? 'Bearer ' + token
+    : http.defaults.headers.common['Authorization'];
+
+export default http;

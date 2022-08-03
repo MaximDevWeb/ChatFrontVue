@@ -3,10 +3,11 @@ import { createRouter, createWebHistory } from 'vue-router';
 // Routes import
 import auth from '@/router/routes/auth';
 import main from '@/router/routes/main';
+import chat from '@/router/routes/chat';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
-    routes: [...auth, ...main],
+    routes: [...auth, ...main, ...chat],
 });
 
 router.afterEach((to) => {

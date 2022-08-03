@@ -20,3 +20,10 @@ export interface Errors {
     email?: Array<string>;
     submit?: Array<string>;
 }
+
+export interface User {
+    id: number;
+    login: string;
+    email: string;
+    created_at: string;
+}

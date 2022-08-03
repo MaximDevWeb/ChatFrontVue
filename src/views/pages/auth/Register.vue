@@ -6,7 +6,7 @@ import CCheckBox from '@/components/ui/cCheckBox.vue';
 import CButton from '@/components/ui/cButton.vue';
 import { reactive, ref } from 'vue';
 import type { Ref } from 'vue';
-import { http } from '@/bootstrap/http';
+import http from '@/bootstrap/http';
 import type { FormRegister, Errors } from '@/interfaces/auth';
 import { useToastStore } from '@/stores/toast';
 import { useRouter } from 'vue-router';

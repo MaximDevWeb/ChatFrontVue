@@ -4,8 +4,15 @@ import CLogo from '@/components/ui/cLogo.vue';
 import CInput from '@/components/ui/cInput.vue';
 import CCheckBox from '@/components/ui/cCheckBox.vue';
 import CButton from '@/components/ui/cButton.vue';
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
+import http from '@/bootstrap/http';
+import type { Ref } from 'vue';
 import type { FormLogin, Errors } from '@/interfaces/auth';
+import { useUserStore } from '@/stores/user';
+import { useRouter } from 'vue-router';
+
+const userStore = useUserStore();
+const router = useRouter();
 
 const form: FormLogin = reactive({
     login: '',
@@ -13,8 +20,21 @@ const form: FormLogin = reactive({
     remember: true,
 });
 
-function submitForm() {
-    console.log(form);
+let errors: Ref<Errors> = ref({});
+
+function submitForm(): void {
+    http.post('auth/login', form)
+        .then((response) => {
+            const token: string = response.data.token;
+
+            userStore.setToken(token);
+            http.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+
+            router.push('/chat');
+        })
+        .catch((error) => {
+            errors.value = error.response.data.errors ?? {};
+        });
 }
 </script>
 
@@ -32,6 +52,7 @@ function submitForm() {
                 label="Логин"
                 placeholder="master_yoda"
                 v-model="form.login"
+                :error="errors.login?.shift()"
             />
         </div>
 
@@ -42,6 +63,7 @@ function submitForm() {
                 label="Пароль"
                 placeholder="master_yoda_pass"
                 v-model="form.password"
+                :error="errors.password?.shift()"
             />
         </div>
 
