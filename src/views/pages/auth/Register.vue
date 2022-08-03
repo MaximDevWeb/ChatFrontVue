@@ -23,8 +23,11 @@ const form: FormRegister = reactive({
 });
 
 let errors: Ref<Errors> = ref({});
+let loading: Ref<boolean> = ref(false);
 
 function submitForm() {
+    loading.value = true;
+
     http.post('auth/create', form)
         .then(() => {
             toastStore.addToast({
@@ -36,6 +39,7 @@ function submitForm() {
         })
         .catch((error) => {
             errors.value = error.response.data.errors ?? {};
+            loading.value = false;
         });
 }
 </script>
@@ -104,7 +108,9 @@ function submitForm() {
         </div>
 
         <div class="mt-4">
-            <c-button @click="submitForm">Зарегистрироваться</c-button>
+            <c-button @click="submitForm" :loading="loading">
+                Зарегистрироваться
+            </c-button>
         </div>
 
         <div class="mt-8 leading-5 auth__desc text-center">

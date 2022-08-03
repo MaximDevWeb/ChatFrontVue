@@ -21,8 +21,11 @@ const form: FormLogin = reactive({
 });
 
 let errors: Ref<Errors> = ref({});
+let loading: Ref<boolean> = ref(false);
 
 function submitForm(): void {
+    loading.value = true;
+
     http.post('auth/login', form)
         .then((response) => {
             const token: string = response.data.token;
@@ -34,6 +37,7 @@ function submitForm(): void {
         })
         .catch((error) => {
             errors.value = error.response.data.errors ?? {};
+            loading.value = false;
         });
 }
 </script>
@@ -74,7 +78,7 @@ function submitForm(): void {
         </div>
 
         <div class="mt-4">
-            <c-button @click="submitForm">Войти</c-button>
+            <c-button @click="submitForm" :loading="loading">Войти</c-button>
         </div>
 
         <div class="mt-8 leading-5 text-center auth__desc">

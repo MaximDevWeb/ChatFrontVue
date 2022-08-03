@@ -13,6 +13,10 @@ const props = defineProps({
             return ['primary', 'success', 'danger', 'light'].includes(value);
         },
     },
+    loading: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const typeClass = computed<string>(() => {
@@ -21,8 +25,24 @@ const typeClass = computed<string>(() => {
 </script>
 
 <template>
-    <a :href="href" class="button rounded-md" :class="typeClass">
-        <slot></slot>
+    <a
+        :href="href"
+        class="button rounded-md"
+        :class="[{ button_inactive: loading }, typeClass]"
+    >
+        <template v-if="loading">
+            Обработка
+
+            <span class="button__loading">
+                <span>.</span>
+                <span>.</span>
+                <span>.</span>
+            </span>
+        </template>
+
+        <template v-else>
+            <slot></slot>
+        </template>
     </a>
 </template>
 
@@ -46,6 +66,42 @@ const typeClass = computed<string>(() => {
     &:hover {
         background-color: variable.$hover-blue;
         border: 2px solid variable.$hover-blue;
+    }
+}
+
+.button_inactive {
+    opacity: 0.85;
+    pointer-events: none;
+}
+
+.button__loading {
+    span {
+        display: inline-block;
+        margin-right: 1px;
+    }
+
+    span:nth-child(1) {
+        animation: load 1s infinite;
+    }
+
+    span:nth-child(2) {
+        animation: load 1s 0.25s infinite;
+    }
+
+    span:nth-child(3) {
+        animation: load 1s 0.5s infinite;
+    }
+}
+
+@keyframes load {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
     }
 }
 </style>
