@@ -10,7 +10,7 @@ const auth: Array<RouteRecordRaw> = [
                 name: 'index',
                 component: () => import('../../views/pages/chat/Index.vue'),
                 meta: {
-                    title: 'Чат',
+                    title: 'Ваши чаты',
                 },
             },
             {

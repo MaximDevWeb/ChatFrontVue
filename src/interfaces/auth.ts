@@ -27,6 +27,7 @@ export interface User {
     email: string;
     created_at: string;
     avatar: Avatar;
+    profile: Profile;
 }
 
 export interface Avatar {
@@ -34,4 +35,12 @@ export interface Avatar {
     type: number;
     path: string;
     link: string;
+}
+
+export interface Profile {
+    id: number;
+    first_name: string;
+    last_name: string;
+    birthday: string;
+    city: string;
 }

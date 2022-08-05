@@ -1,18 +1,25 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user';
 import { computed } from 'vue';
-import type { User } from '@/interfaces/auth';
 import { useRoute } from 'vue-router';
 
 const userStore = useUserStore();
 const route = useRoute();
 
-const user = computed<User | null>(() => {
+const user = computed(() => {
     return userStore.getUser;
 });
 
-const title = computed<any>(() => {
+const title = computed(() => {
     return route.meta.title;
+});
+
+const name = computed(() => {
+    if (user.value?.profile.first_name) {
+        return `${user.value.profile.first_name}  ${user.value.profile.last_name}`;
+    } else {
+        return user.value?.login;
+    }
 });
 </script>
 
@@ -22,8 +29,9 @@ const title = computed<any>(() => {
             <img :src="user.avatar.link" />
         </div>
 
-        <div class="text-lg">
-            {{ title }}
+        <div class="text-right">
+            <p class="uppercase">{{ title }}</p>
+            <p class="text-sm user__name">{{ name }}</p>
         </div>
     </div>
 </template>
@@ -48,5 +56,9 @@ const title = computed<any>(() => {
         width: 100%;
         height: auto;
     }
+}
+
+.user__name {
+    color: variable.$yellow;
 }
 </style>
