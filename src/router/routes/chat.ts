@@ -18,7 +18,23 @@ const auth: Array<RouteRecordRaw> = [
                 name: 'profile',
                 component: () => import('../../views/pages/chat/Profile.vue'),
                 meta: {
-                    title: 'Профиль пользоваьеля',
+                    title: 'Профиль пользователя',
+                },
+            },
+            {
+                path: 'contacts',
+                name: 'contacts',
+                component: () => import('../../views/pages/chat/Contacts.vue'),
+                meta: {
+                    title: 'Ваши контакты',
+                },
+            },
+            {
+                path: 'settings',
+                name: 'settings',
+                component: () => import('../../views/pages/chat/Settings.vue'),
+                meta: {
+                    title: 'Настройки',
                 },
             },
         ],

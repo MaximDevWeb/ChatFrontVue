@@ -1,18 +1,10 @@
 <script setup lang="ts">
-import { useUserStore } from '@/stores/user';
-import { computed } from 'vue';
-
-const userStore = useUserStore();
-
-const user = computed(() => {
-    return userStore.getUser;
-});
+import CAvatarEditor from '@/components/ui/cAvatarEditor.vue';
 </script>
 
 <template>
-    <div v-if="user">
-        <p>{{ user.login }}</p>
-        <p>{{ user.email }}</p>
+    <div class="profile">
+        <c-avatar-editor />
     </div>
 </template>
 

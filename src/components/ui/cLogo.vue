@@ -58,8 +58,8 @@ const sizeClass = computed<string>(() => {
 
 .logo_sm {
     .logo__img {
-        height: 30px;
-        width: 30px;
+        height: 26px;
+        width: 26px;
     }
 
     .logo__label {

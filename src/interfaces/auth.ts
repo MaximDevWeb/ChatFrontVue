@@ -26,4 +26,12 @@ export interface User {
     login: string;
     email: string;
     created_at: string;
+    avatar: Avatar;
+}
+
+export interface Avatar {
+    id: number;
+    type: number;
+    path: string;
+    link: string;
 }

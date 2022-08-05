@@ -19,5 +19,10 @@ export const useUserStore = defineStore('user', {
         isAuth(): boolean {
             return !!localStorage.getItem(this.tokenName);
         },
+        setAvatarLink(link: string): void {
+            if (this.user) {
+                this.user.avatar.link = link;
+            }
+        },
     },
 });
