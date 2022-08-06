@@ -2,31 +2,42 @@
 import { useUserStore } from '@/stores/user';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
+import type { User } from '@/interfaces/auth';
 
 const userStore = useUserStore();
 const route = useRoute();
 
 const user = computed(() => {
-    return userStore.getUser;
+    return userStore.getUser as User;
 });
 
 const title = computed(() => {
-    return route.meta.title;
+    return route.meta.title as string;
 });
 
 const name = computed(() => {
+    let name = '';
+
     if (user.value?.profile.first_name) {
-        return `${user.value.profile.first_name}  ${user.value.profile.last_name}`;
-    } else {
-        return user.value?.login;
+        name += user.value.profile.first_name;
     }
+
+    if (user.value?.profile.last_name) {
+        name += ' ' + user.value.profile.last_name;
+    }
+
+    if (!name) {
+        name = user.value?.login ?? '';
+    }
+
+    return name as string;
 });
 </script>
 
 <template>
-    <div class="user" v-if="user">
+    <div class="user">
         <div class="user__avatar">
-            <img :src="user.avatar.link" />
+            <img :src="user?.avatar.link" />
         </div>
 
         <div class="text-right">

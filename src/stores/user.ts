@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { User } from '@/interfaces/auth';
+import type { Profile, User } from '@/interfaces/auth';
 
 export const useUserStore = defineStore('user', {
     state: () => ({
@@ -16,13 +16,18 @@ export const useUserStore = defineStore('user', {
         setUser(user: User | null): void {
             this.user = user;
         },
-        isAuth(): boolean {
-            return !!localStorage.getItem(this.tokenName);
+        setProfile(profile: Profile): void {
+            if (this.user) {
+                this.user.profile = profile;
+            }
         },
         setAvatarLink(link: string): void {
             if (this.user) {
                 this.user.avatar.link = link;
             }
+        },
+        isAuth(): boolean {
+            return !!localStorage.getItem(this.tokenName);
         },
     },
 });

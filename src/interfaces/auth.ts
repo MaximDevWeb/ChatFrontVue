@@ -38,9 +38,9 @@ export interface Avatar {
 }
 
 export interface Profile {
-    id: number;
+    id?: number;
     first_name: string;
     last_name: string;
-    birthday: string;
+    birthdate: string;
     city: string;
 }
