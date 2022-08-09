@@ -17,3 +17,58 @@ a.link {
         color: white;
     }
 }
+
+// Block head style
+
+.block-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.block-head__text {
+    opacity: 0.7;
+}
+
+.block-head__bts {
+    display: flex;
+    align-items: center;
+}
+
+.block-head__btn {
+    color: variable.$black-white;
+    height: 30px;
+    width: 30px;
+    padding: 0.25rem;
+
+    &:hover {
+        color: white;
+        transition: color 0.3s;
+    }
+}
+
+// Perfect scroll style
+
+.ps .ps__thumb-y,
+.ps .ps__thumb-x{
+    background-color: variable.$black-white;
+    width: 4px;
+    right: 0;
+}
+
+.ps .ps__rail-y,
+.ps .ps__rail-x {
+    width: 8px;
+    border-radius: 4px;
+
+    &:hover,
+    &:focus{
+        width: 8px;
+        background-color: variable.$gray;
+
+        & > .ps__thumb-y,
+        & > .ps__thumb-x {
+            width: 8px;
+        }
+    }
+}

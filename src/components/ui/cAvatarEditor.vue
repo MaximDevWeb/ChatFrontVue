@@ -57,7 +57,7 @@ const avatarChange = (event: Event): void => {
 </script>
 
 <template>
-    <div v-if="userAvatar" class="avatar mt-6">
+    <div v-if="userAvatar" class="avatar">
         <div
             class="avatar__user"
             @click="avatarSelect"

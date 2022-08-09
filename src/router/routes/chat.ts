@@ -30,6 +30,15 @@ const auth: Array<RouteRecordRaw> = [
                 },
             },
             {
+                path: 'contacts/add',
+                name: 'contacts-add',
+                component: () =>
+                    import('../../views/pages/chat/ContactsAdd.vue'),
+                meta: {
+                    title: 'Добавить контакт',
+                },
+            },
+            {
                 path: 'settings',
                 name: 'settings',
                 component: () => import('../../views/pages/chat/Settings.vue'),

@@ -52,6 +52,8 @@ onMounted((): void => {
 
 .edits {
     position: absolute;
+    display: flex;
+    flex-direction: column;
     top: 1rem;
     bottom: 1rem;
     left: 5.5rem;

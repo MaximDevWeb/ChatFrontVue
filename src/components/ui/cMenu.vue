@@ -54,7 +54,7 @@ const logOut = (): void => {
     bottom: 1rem;
     left: 1rem;
     width: 50px;
-    background-color: variable.$light-gray;
+    background-color: variable.$gray;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
