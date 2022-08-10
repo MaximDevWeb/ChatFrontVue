@@ -2,10 +2,12 @@
 import CToastList from '@/components/ui/cToastList.vue';
 import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import http from '@/bootstrap/http';
 import CMenu from '@/components/ui/cMenu.vue';
 import CUser from '@/components/ui/cUser.vue';
+import PusherSocket from '@/classes/PusherSocket';
+import { useToastStore } from '@/stores/toast';
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -15,6 +17,22 @@ const authLoad = (): void => {
         http.get('auth/user')
             .then((response) => {
                 userStore.setUser(response.data.user);
+
+                // Отслеживаем события Pusher
+                const pusher = PusherSocket.get();
+                const toastStore = useToastStore();
+
+                // События связанные с контактами
+                const channel = pusher.subscribe('contacts');
+                channel.bind(
+                    'contacts.created.' + response.data.user.id,
+                    function (data: any) {
+                        toastStore.addToast({
+                            title: 'Событие контакты',
+                            message: data.message,
+                        });
+                    }
+                );
             })
             .catch(() => {
                 router.push('/auth');

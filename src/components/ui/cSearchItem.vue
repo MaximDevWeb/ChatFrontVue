@@ -1,12 +1,25 @@
 <script setup lang="ts">
 import CIcon from '@/components/icons/cIcon.vue';
+import http from '@/bootstrap/http';
+import { useToastStore } from '@/stores/toast';
 
-defineProps({
+const toastStore = useToastStore();
+
+const props = defineProps({
     item: {
         type: Object,
         required: true,
     },
 });
+
+const addContact = () => {
+    http.post('chat/contacts', { contact_id: props.item.user_id }).then(() => {
+        toastStore.addToast({
+            title: 'Контакт добавлен',
+            message: props.item.full_name + ' добавлен в контакты',
+        });
+    });
+};
 </script>
 
 <template>
@@ -21,7 +34,7 @@ defineProps({
         </div>
 
         <div class="contacts-add__actions">
-            <a href="#">
+            <a href="#" @click.prevent="addContact">
                 <c-icon name="add" class="contacts-add__btn" />
             </a>
         </div>
