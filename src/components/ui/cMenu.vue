@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import CIcon from '@/components/icons/cIcon.vue';
-import http from '@/bootstrap/http';
 import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
 import CLogo from '@/components/ui/cLogo.vue';
+import Http from '@/classes/Http';
 
 const userStore = useUserStore();
 const router = useRouter();
 
 const logOut = (): void => {
-    http.get('auth/logout').then(() => {
+    Http.inst.get('auth/logout').then(() => {
         userStore.setToken('');
         userStore.setUser(null);
         router.push('/auth');

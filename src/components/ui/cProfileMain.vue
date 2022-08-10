@@ -5,8 +5,8 @@ import type { Ref } from 'vue';
 import type { User, Profile } from '@/interfaces/auth';
 import CEditable from '@/components/ui/cEditable.vue';
 import CButton from '@/components/ui/cButton.vue';
-import http from '@/bootstrap/http';
 import { useToastStore } from '@/stores/toast';
+import Http from '@/classes/Http';
 
 const userStore = useUserStore();
 const toastStore = useToastStore();
@@ -29,7 +29,8 @@ const form = computed(() => {
 const updateProfile = (): void => {
     loading.value = true;
 
-    http.post('user/profile', form.value)
+    Http.inst
+        .post('user/profile', form.value)
         .then(() => {
             toastStore.addToast({
                 title: 'Успешно',

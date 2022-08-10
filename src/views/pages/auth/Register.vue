@@ -6,10 +6,10 @@ import CCheckBox from '@/components/ui/cCheckBox.vue';
 import CButton from '@/components/ui/cButton.vue';
 import { reactive, ref } from 'vue';
 import type { Ref } from 'vue';
-import http from '@/bootstrap/http';
 import type { FormRegister, Errors } from '@/interfaces/auth';
 import { useToastStore } from '@/stores/toast';
 import { useRouter } from 'vue-router';
+import Http from '@/classes/Http';
 
 const toastStore = useToastStore();
 const router = useRouter();
@@ -28,7 +28,8 @@ let loading: Ref<boolean> = ref(false);
 function submitForm() {
     loading.value = true;
 
-    http.post('auth/create', form)
+    Http.inst
+        .post('auth/create', form)
         .then(() => {
             toastStore.addToast({
                 title: 'Успешно',

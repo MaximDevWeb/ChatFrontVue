@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import type { Profile, User } from '@/interfaces/auth';
+import Http from '@/classes/Http';
 
 export const useUserStore = defineStore('user', {
     state: () => ({
@@ -12,6 +13,8 @@ export const useUserStore = defineStore('user', {
     actions: {
         setToken(token: string): void {
             localStorage.setItem(this.tokenName, token);
+            Http.inst.defaults.headers.common['Authorization'] =
+                'Bearer ' + token;
         },
         setUser(user: User | null): void {
             this.user = user;

@@ -1,6 +1,6 @@
 import CFile from '@/classes/files/cFile';
 import type { AxiosPromise } from 'axios';
-import http from '@/bootstrap/http';
+import Http from '@/classes/Http';
 
 export default class CAvatar extends CFile {
     constructor(file: File) {
@@ -15,6 +15,6 @@ export default class CAvatar extends CFile {
         const data = new FormData();
         data.append('avatar', this.file);
 
-        return http.post('user/avatar', data);
+        return Http.inst.post('user/avatar', data);
     }
 }

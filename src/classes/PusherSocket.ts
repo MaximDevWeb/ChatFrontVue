@@ -10,12 +10,11 @@ export default class PusherSocket {
         });
     }
 
-    public static get() {
-        if (PusherSocket._instance) {
-            return PusherSocket._instance;
-        } else {
+    public static get inst(): Pusher {
+        if (!PusherSocket._instance) {
             new PusherSocket();
-            return PusherSocket._instance;
         }
+
+        return PusherSocket._instance;
     }
 }

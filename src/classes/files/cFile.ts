@@ -1,5 +1,5 @@
-import http from '@/bootstrap/http';
 import type { AxiosPromise } from 'axios';
+import Http from '@/classes/Http';
 
 export default class CFile {
     protected validType: Array<string> = ['image', 'application'];
@@ -37,6 +37,6 @@ export default class CFile {
             avatar: this.file,
         };
 
-        return http.post('user/avatar', data);
+        return Http.inst.post('user/avatar', data);
     }
 }

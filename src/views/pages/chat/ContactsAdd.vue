@@ -5,9 +5,9 @@ import _ from 'lodash';
 import { computed, ref, watch } from 'vue';
 import type { Ref } from 'vue';
 import type { ContactSearch } from '@/interfaces/contacts';
-import http from '@/bootstrap/http';
 import { useToastStore } from '@/stores/toast';
 import CSearchItem from '@/components/ui/cSearchItem.vue';
+import Http from '@/classes/Http';
 
 const toastStore = useToastStore();
 
@@ -33,7 +33,8 @@ watch(search, async (value) => {
 });
 
 const searchFunc = _.debounce((value: string) => {
-    http.post('users/search', { search: value })
+    Http.inst
+        .post('users/search', { search: value })
         .then((response) => {
             contacts.value = response.data.contacts;
         })

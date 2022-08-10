@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CIcon from '@/components/icons/cIcon.vue';
-import http from '@/bootstrap/http';
 import { useToastStore } from '@/stores/toast';
+import Http from '@/classes/Http';
 
 const toastStore = useToastStore();
 
@@ -13,12 +13,14 @@ const props = defineProps({
 });
 
 const addContact = () => {
-    http.post('chat/contacts', { contact_id: props.item.user_id }).then(() => {
-        toastStore.addToast({
-            title: 'Контакт добавлен',
-            message: props.item.full_name + ' добавлен в контакты',
+    Http.inst
+        .post('chat/contacts', { contact_id: props.item.user_id })
+        .then(() => {
+            toastStore.addToast({
+                title: 'Контакт добавлен',
+                message: props.item.full_name + ' добавлен в контакты',
+            });
         });
-    });
 };
 </script>
 

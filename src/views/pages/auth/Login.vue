@@ -5,11 +5,11 @@ import CInput from '@/components/ui/cInput.vue';
 import CCheckBox from '@/components/ui/cCheckBox.vue';
 import CButton from '@/components/ui/cButton.vue';
 import { reactive, ref } from 'vue';
-import http from '@/bootstrap/http';
 import type { Ref } from 'vue';
 import type { FormLogin, Errors } from '@/interfaces/auth';
 import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
+import Http from '@/classes/Http';
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -26,13 +26,10 @@ let loading: Ref<boolean> = ref(false);
 function submitForm(): void {
     loading.value = true;
 
-    http.post('auth/login', form)
+    Http.inst
+        .post('auth/login', form)
         .then((response) => {
-            const token: string = response.data.token;
-
-            userStore.setToken(token);
-            http.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-
+            userStore.setToken(response.data.token);
             router.push('/chat');
         })
         .catch((error) => {
