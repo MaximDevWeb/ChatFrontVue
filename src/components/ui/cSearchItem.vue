@@ -2,6 +2,7 @@
 import CIcon from '@/components/icons/cIcon.vue';
 import { useToastStore } from '@/stores/toast';
 import Http from '@/classes/Http';
+import { ref } from 'vue';
 
 const toastStore = useToastStore();
 
@@ -12,10 +13,18 @@ const props = defineProps({
     },
 });
 
+const addBtn = ref<HTMLBaseElement | null>(null);
+const added = ref<boolean>(false);
+
 const addContact = () => {
+    addBtn.value?.classList.add('flicker');
+
     Http.inst
         .post('chat/contacts', { contact_id: props.item.user_id })
         .then(() => {
+            addBtn.value?.classList.remove('flicker');
+            added.value = true;
+
             toastStore.addToast({
                 title: 'Контакт добавлен',
                 message: props.item.full_name + ' добавлен в контакты',
@@ -36,7 +45,11 @@ const addContact = () => {
         </div>
 
         <div class="contacts-add__actions">
-            <a href="#" @click.prevent="addContact">
+            <a v-if="added" href="#">
+                <c-icon name="check" class="contacts-add__check" />
+            </a>
+
+            <a v-else href="#" @click.prevent="addContact" ref="addBtn">
                 <c-icon name="add" class="contacts-add__btn" />
             </a>
         </div>
@@ -96,5 +109,13 @@ const addContact = () => {
     &:hover {
         color: white;
     }
+}
+
+.contacts-add__check {
+    pointer-events: none;
+    padding: 8px;
+    width: 40px;
+    height: 40px;
+    color: variable.$black-white;
 }
 </style>

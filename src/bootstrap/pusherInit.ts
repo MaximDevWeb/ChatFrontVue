@@ -19,6 +19,7 @@ export const pusherInit = (user: User) => {
 
     // Обработка событий для контактов
     const channel = pusher.subscribe('contacts');
+
     channel.bind('contacts.created.' + user.id, function (data: any) {
         toastStore.addToast({
             title: 'Событие контакты',
