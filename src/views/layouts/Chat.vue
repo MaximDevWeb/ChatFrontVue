@@ -7,6 +7,7 @@ import CMenu from '@/components/ui/cMenu.vue';
 import CUser from '@/components/ui/cUser.vue';
 import { pusherInit } from '@/bootstrap/pusherInit';
 import Http from '@/classes/Http';
+import CConfirm from '@/components/ui/cConfirm.vue';
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -34,6 +35,7 @@ onMounted((): void => {
 
 <template>
     <c-toast-list />
+    <c-confirm />
 
     <div class="chat container mx-auto h-screen p-4 relative">
         <c-menu />

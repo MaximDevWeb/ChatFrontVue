@@ -69,6 +69,28 @@ const typeClass = computed<string>(() => {
     }
 }
 
+.button_danger {
+    background-color: variable.$red;
+    border: 2px solid variable.$red;
+    color: white;
+
+    &:hover {
+        background-color: variable.$hover-red;
+        border: 2px solid variable.$hover-red;
+    }
+}
+
+.button_success {
+    background-color: variable.$green;
+    border: 2px solid variable.$green;
+    color: white;
+
+    &:hover {
+        background-color: variable.$hover-green;
+        border: 2px solid variable.$hover-green;
+    }
+}
+
 .button_inactive {
     opacity: 0.85;
     pointer-events: none;

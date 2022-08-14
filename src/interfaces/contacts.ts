@@ -6,3 +6,11 @@ export interface ContactSearch {
         link: string;
     };
 }
+
+export interface Contact {
+    id: number;
+    contact_id: number;
+    login: string;
+    full_name: string;
+    avatar: string;
+}

@@ -3,8 +3,10 @@ import CIcon from '@/components/icons/cIcon.vue';
 import { useToastStore } from '@/stores/toast';
 import Http from '@/classes/Http';
 import { ref } from 'vue';
+import { useContactsStore } from '@/stores/contacts';
 
 const toastStore = useToastStore();
+const contactStore = useContactsStore();
 
 const props = defineProps({
     item: {
@@ -24,6 +26,8 @@ const addContact = () => {
         .then(() => {
             addBtn.value?.classList.remove('flicker');
             added.value = true;
+
+            contactStore.loadContacts();
 
             toastStore.addToast({
                 title: 'Контакт добавлен',
@@ -100,9 +104,9 @@ const addContact = () => {
 }
 
 .contacts-add__btn {
-    padding: 8px;
-    width: 40px;
-    height: 40px;
+    padding: 6px;
+    width: 32px;
+    height: 32px;
     color: variable.$black-white;
     transition: all 0.3s;
 
@@ -113,9 +117,9 @@ const addContact = () => {
 
 .contacts-add__check {
     pointer-events: none;
-    padding: 8px;
-    width: 40px;
-    height: 40px;
+    padding: 6px;
+    width: 32px;
+    height: 32px;
     color: variable.$black-white;
 }
 </style>
