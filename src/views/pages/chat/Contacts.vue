@@ -32,8 +32,12 @@ const contactsFiltered = computed(() => {
         });
     }
 
+    list = _.sortBy(list, (item) =>
+        item.full_name ? item.full_name : item.login
+    );
+
     return _.groupBy(list, (item: Contact) =>
-        item.full_name.trim() ? item.full_name.charAt(0) : item.login.charAt(0)
+        item.full_name ? item.full_name.charAt(0) : item.login.charAt(0)
     );
 });
 
@@ -58,28 +62,26 @@ onMounted(() => {
             <c-search v-model="search" />
         </div>
 
-        <perfect-scrollbar class="contacts__result mt-4">
-            <template v-if="contacts.length">
-                <div
-                    class="grid gap-4 grid-cols-1"
-                    v-for="(value, key) of contactsFiltered"
-                >
-                    <div class="mt-4">
-                        <span class="contacts__char text-sm rounded">
-                            {{ key }}
-                        </span>
-                    </div>
-
-                    <c-contact-item
-                        v-for="contact in value"
-                        :key="contact.id"
-                        :item="contact"
-                    />
+        <perfect-scrollbar class="contacts__result mt-4" v-if="contacts.length">
+            <div
+                class="grid gap-4 grid-cols-1"
+                v-for="(value, key) of contactsFiltered"
+            >
+                <div class="mt-4">
+                    <span class="contacts__char text-sm rounded">
+                        {{ key }}
+                    </span>
                 </div>
-            </template>
 
-            <div v-else class="text-center">У Вас нет кантактов</div>
+                <c-contact-item
+                    v-for="contact in value"
+                    :key="contact.id"
+                    :item="contact"
+                />
+            </div>
         </perfect-scrollbar>
+
+        <div v-else class="text-center mt-4">У Вас нет кантактов</div>
     </div>
 </template>
 
