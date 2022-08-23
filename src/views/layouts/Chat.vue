@@ -2,15 +2,22 @@
 import CToastList from '@/components/ui/cToastList.vue';
 import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import CMenu from '@/components/ui/cMenu.vue';
 import CUser from '@/components/ui/cUser.vue';
 import { pusherInit } from '@/bootstrap/pusherInit';
 import Http from '@/classes/Http';
 import CConfirm from '@/components/ui/cConfirm.vue';
+import CMessagesBox from '@/components/ui/cMessagesBox.vue';
+import { useChatStore } from '@/stores/chats';
 
 const userStore = useUserStore();
+const chatStore = useChatStore();
 const router = useRouter();
+
+const chat = computed(() => {
+    return chatStore.getCurrentChat;
+});
 
 const authLoad = (): void => {
     if (userStore.isAuth()) {
@@ -46,7 +53,9 @@ onMounted((): void => {
             <router-view></router-view>
         </div>
 
-        <div class="chats"></div>
+        <div class="chats">
+            <c-messages-box v-if="chat" />
+        </div>
 
         <div class="options"></div>
     </div>
@@ -65,5 +74,14 @@ onMounted((): void => {
     width: 340px;
     padding-right: 2rem;
     border-right: 1px solid variable.$light-gray;
+}
+
+.chats {
+    position: absolute;
+    top: 1rem;
+    bottom: 1rem;
+    left: calc(340px + 5.5rem);
+    right: 0;
+    padding: 0 2rem;
 }
 </style>
