@@ -10,6 +10,7 @@ import Http from '@/classes/Http';
 import CConfirm from '@/components/ui/cConfirm.vue';
 import CMessagesBox from '@/components/ui/cMessagesBox.vue';
 import { useChatStore } from '@/stores/chats';
+import CMessagesBoxEmpty from '@/components/ui/cMessagesBoxEmpty.vue';
 
 const userStore = useUserStore();
 const chatStore = useChatStore();
@@ -55,6 +56,7 @@ onMounted((): void => {
 
         <div class="chats">
             <c-messages-box v-if="chat" />
+            <c-messages-box-empty v-else />
         </div>
 
         <div class="options"></div>
