@@ -20,10 +20,10 @@ const messages = computed(() => {
 </script>
 
 <template>
-    <perfect-scrollbar class="messages__list my-4">
-        <template v-for="message in messages">
+    <perfect-scrollbar class="messages__list my-4 pr-4 scroll-inversion">
+        <div v-for="message in messages" class="scroll-inversion">
             <c-message-item :message="message" />
-        </template>
+        </div>
     </perfect-scrollbar>
 </template>
 
@@ -32,6 +32,9 @@ const messages = computed(() => {
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+}
+
+.scroll-inversion {
+    transform: scaleY(-1);
 }
 </style>
