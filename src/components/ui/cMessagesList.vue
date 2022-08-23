@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useChatStore } from '@/stores/chats';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import type { Message } from '@/interfaces/caht';
 import CMessageItem from '@/components/ui/cMessageItem.vue';
 
@@ -16,6 +16,10 @@ const messages = computed(() => {
 
         return mes;
     });
+});
+
+onMounted(() => {
+    chatStore.loadMessages();
 });
 </script>
 
