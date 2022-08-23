@@ -3,9 +3,13 @@ import CIcon from '@/components/icons/cIcon.vue';
 import { useConfirmStore } from '@/stores/confirm';
 import { useContactsStore } from '@/stores/contacts';
 import type { Contact } from '@/interfaces/contacts';
+import { useRouter } from 'vue-router';
+import { useChatStore } from '@/stores/chats';
 
 const confirmStore = useConfirmStore();
 const contactStore = useContactsStore();
+const chatStore = useChatStore();
+const router = useRouter();
 
 const props = defineProps<{
     item: Contact;
@@ -22,6 +26,13 @@ const deleteContact = () => {
 const deleteCallback = (): void => {
     contactStore.deleteContact(props.item);
 };
+
+const chatCreate = (): void => {
+    chatStore.setCurrentChat({
+        subject: props.item,
+        type: 'personal',
+    });
+};
 </script>
 
 <template>
@@ -36,15 +47,14 @@ const deleteCallback = (): void => {
         </div>
 
         <div class="contacts__actions">
-            <a href="#">
+            <a href="#" @click.prevent="deleteContact">
                 <c-icon
                     name="delete"
                     class="contacts__btn contacts__btn_delete"
-                    @click.prevnt="deleteContact"
                 />
             </a>
 
-            <a href="#">
+            <a href="#" @click.prevent="chatCreate">
                 <c-icon name="add-message" class="contacts__btn" />
             </a>
         </div>
