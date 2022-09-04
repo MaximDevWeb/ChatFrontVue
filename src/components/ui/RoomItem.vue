@@ -17,7 +17,7 @@ const props = defineProps<{
 }>();
 
 /**
- * Определение состояний
+ * Загрузка состояний
  */
 const chatsStore = useChatStore();
 

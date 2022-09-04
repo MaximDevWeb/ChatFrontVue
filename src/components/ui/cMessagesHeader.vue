@@ -10,8 +10,15 @@ import CIcon from '@/components/icons/cIcon.vue';
 import type { Room } from '@/interfaces/caht';
 import { typeChat } from '@/interfaces/caht';
 
+/**
+ * Загрузка состояний
+ */
 const chatStore = useChatStore();
 
+/**
+ * Функция получения текущего чата
+ * @return {Room} room
+ */
 const room = computed(() => {
     return chatStore.getRoom as Room;
 });
