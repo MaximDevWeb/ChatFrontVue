@@ -7,10 +7,6 @@ import CMessagesList from '@/components/ui/cMessagesList.vue';
 <template>
     <div class="messages">
         <c-messages-header />
-
-        <c-messages-list />
-
-        <c-messages-input />
     </div>
 </template>
 

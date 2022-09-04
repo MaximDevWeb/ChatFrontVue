@@ -1,14 +1,33 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import type { User } from '@/interfaces/auth';
 import CIcon from '@/components/icons/cIcon.vue';
+import { useChatStore } from '@/stores/chats';
+import Http from '@/classes/Http';
 
 const userStore = useUserStore();
+const chatStore = useChatStore();
+
+const message = ref<String>('');
 
 const user = computed(() => {
     return userStore.getUser as User;
 });
+
+const sendMessage = (): void => {
+    const data = {
+        subject: chatStore.currentChat?.subject.contact_id,
+        type: chatStore.currentChat?.type,
+        text: message.value,
+    };
+
+    Http.inst.post('chat/manager', data).then(() => {
+        console.log('Hello');
+    });
+
+    message.value = '';
+};
 </script>
 
 <template>
@@ -23,6 +42,8 @@ const user = computed(() => {
             type="text"
             placeholder="Ваше сообщение..."
             class="mess-input__input mx-4"
+            v-model="message"
+            @keypress.enter="sendMessage"
         />
 
         <div class="flex mr-4">
@@ -30,7 +51,7 @@ const user = computed(() => {
             <c-icon name="add_file" class="mess-input__icon" />
         </div>
 
-        <div class="mess-input_send">
+        <div class="mess-input_send" @click="sendMessage">
             <c-icon name="send" class="mess-input__icon" />
         </div>
     </div>

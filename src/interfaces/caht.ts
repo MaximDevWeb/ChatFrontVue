@@ -3,8 +3,10 @@ export enum typeChat {
     PERSONAL = 'personal',
 }
 
-export interface currentChat {
-    subject: Object;
+export interface Room {
+    id: number;
+    name: string;
+    avatar: string;
     type: typeChat;
 }
 

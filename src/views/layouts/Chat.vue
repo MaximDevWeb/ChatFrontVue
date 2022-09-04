@@ -16,8 +16,8 @@ const userStore = useUserStore();
 const chatStore = useChatStore();
 const router = useRouter();
 
-const chat = computed(() => {
-    return chatStore.getCurrentChat;
+const room = computed(() => {
+    return chatStore.getRoom;
 });
 
 const authLoad = (): void => {
@@ -55,7 +55,7 @@ onMounted((): void => {
         </div>
 
         <div class="chats">
-            <c-messages-box v-if="chat" />
+            <c-messages-box v-if="room" />
             <c-messages-box-empty v-else />
         </div>
 

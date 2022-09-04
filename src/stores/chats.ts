@@ -1,22 +1,33 @@
 import { defineStore } from 'pinia';
-import type { currentChat } from '@/interfaces/caht';
+import type { Room } from '@/interfaces/caht';
 import type { Message } from '@/interfaces/caht';
+import Http from '@/classes/Http';
 
 export const useChatStore = defineStore('chat', {
     state: () => ({
-        currentChat: <currentChat | null>null,
+        room: <Room | null>null,
+        rooms: [] as Array<Room>,
         messages: [] as Array<Message>,
     }),
     getters: {
-        getCurrentChat: (state) => state.currentChat,
+        getRoom: (state) => state.room,
+        getRooms: (state) => state.rooms,
         getMessages: (state) => state.messages,
     },
     actions: {
-        setCurrentChat(chat: currentChat): void {
-            this.currentChat = chat;
+        setRoom(room: Room): void {
+            this.room = room;
+        },
+        loadRooms(): void {
+            Http.inst.get('chat/rooms/my').then((response) => {
+                console.log(response.data);
+                this.rooms = response.data.rooms;
+            });
         },
         loadMessages(): void {
-            console.log(this.currentChat);
+            Http.inst.get('chat/rooms/my').then((response) => {
+                console.log(response.data);
+            });
         },
     },
 });

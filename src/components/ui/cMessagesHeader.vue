@@ -1,18 +1,19 @@
 <script setup lang="ts">
+/**
+ * Компонент отображение шатки
+ * текущего сайта
+ */
+
 import { useChatStore } from '@/stores/chats';
 import { computed } from 'vue';
 import CIcon from '@/components/icons/cIcon.vue';
-import type { Contact } from '@/interfaces/contacts';
+import type { Room } from '@/interfaces/caht';
 import { typeChat } from '@/interfaces/caht';
 
 const chatStore = useChatStore();
 
-const subject = computed(() => {
-    return chatStore.getCurrentChat?.subject as Contact;
-});
-
-const type = computed(() => {
-    return chatStore.getCurrentChat?.type;
+const room = computed(() => {
+    return chatStore.getRoom as Room;
 });
 </script>
 
@@ -20,17 +21,19 @@ const type = computed(() => {
     <div class="messages__header">
         <div class="messages__subject">
             <img
-                :src="subject.avatar"
-                :alt="subject.login"
+                :src="room.avatar"
+                :alt="room.name"
                 class="messages__avatar mr-4"
             />
             <div>
                 <p class="uppercase">
-                    {{ subject.full_name ? subject.full_name : subject.login }}
+                    {{ room.name }}
                 </p>
                 <p class="text-sm messages__type">
                     {{
-                        type === typeChat.GROUP ? 'Групповой чат' : 'Личный чат'
+                        room.type === typeChat.GROUP
+                            ? 'Групповой чат'
+                            : 'Личный чат'
                     }}
                 </p>
             </div>
