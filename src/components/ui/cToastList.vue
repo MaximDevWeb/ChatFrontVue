@@ -25,6 +25,7 @@ const toastStore = useToastStore();
     width: 300px;
     top: 1rem;
     right: 1rem;
+    z-index: 1000;
 }
 
 .toast-animate-move,

@@ -1,7 +1,11 @@
 import { defineStore } from 'pinia';
-import type { Room } from '@/interfaces/caht';
+import type { Room, dataMessage } from '@/interfaces/caht';
 import type { Message } from '@/interfaces/caht';
 import Http from '@/classes/Http';
+import { useToastStore } from '@/stores/toast';
+import type { AxiosPromise, AxiosResponse } from 'axios';
+
+const toastStore = useToastStore();
 
 export const useChatStore = defineStore('chat', {
     state: () => ({
@@ -17,17 +21,44 @@ export const useChatStore = defineStore('chat', {
     actions: {
         setRoom(room: Room): void {
             this.room = room;
+            this.loadMessages();
         },
         loadRooms(): void {
             Http.inst.get('chat/rooms/my').then((response) => {
-                console.log(response.data);
                 this.rooms = response.data.rooms;
             });
         },
         loadMessages(): void {
-            Http.inst.get('chat/rooms/my').then((response) => {
-                console.log(response.data);
-            });
+            if (this.room) {
+                Http.inst
+                    .get(`/chat/room/${this.room.id}/messages`)
+                    .then((response) => {
+                        this.messages = response.data.messages;
+                    })
+                    .catch(() => {
+                        toastStore.addToast({
+                            title: 'Ошибка загрузки',
+                            message: 'Это не ваш чат',
+                            type: 'danger',
+                        });
+                    });
+            }
+        },
+        addMessage(message: Message) {
+            this.messages.push(message);
+        },
+        sendMessage(message: dataMessage) {
+            if (this.room) {
+                return Http.inst
+                    .post(`chat/room/${this.room.id}/messages`, message)
+                    .catch(() => {
+                        toastStore.addToast({
+                            title: 'Ошибка отправки',
+                            message: 'Сообщение не отправлено',
+                            type: 'danger',
+                        });
+                    });
+            }
         },
     },
 });

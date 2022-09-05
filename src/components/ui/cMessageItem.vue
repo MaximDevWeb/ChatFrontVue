@@ -1,21 +1,40 @@
 <script setup lang="ts">
+/**
+ * Компонент вывода одного сообщения
+ */
 import type { Message } from '@/interfaces/caht';
 import { computed } from 'vue';
 import { DateTime } from 'luxon';
 import { useUserStore } from '@/stores/user';
 import CMessageItemInfo from '@/components/ui/cMessageItemInfo.vue';
 
+/**
+ * Пареметры компонента
+ * @param {Message} message - данные чата
+ */
 const props = defineProps<{
     message: Message;
 }>();
 
+/**
+ * Загрузка состояний
+ */
 const userStore = useUserStore();
 
-const timeMessage = computed((): string => {
+/**
+ * Вычисляем время сообщения
+ * @return {String}
+ */
+const time = computed((): string => {
     const date = DateTime.fromJSDate(new Date(props.message.created_at));
     return date.toLocaleString(DateTime.TIME_SIMPLE);
 });
 
+/**
+ * Вычисляем класс для расположения сообщений
+ * свои - справа, чужие - слева
+ * @return {String} 'message__item_left' | 'message__item_right'
+ */
 const messageClass = computed((): string => {
     return props.message.user.id === userStore.getUser?.id
         ? 'message__item_left'
@@ -24,16 +43,16 @@ const messageClass = computed((): string => {
 </script>
 
 <template>
-    <div class="message__item mb-2" :class="[messageClass]">
-        <c-message-item-info :user="message.user" v-if="message.showUser" />
+    <div class="message__item mb-4" :class="[messageClass]">
+        <c-message-item-info :user="message.user" v-if="message.prev_current" />
 
         <div class="message__time text-sm">
-            {{ timeMessage }}
+            {{ time }}
         </div>
 
         <div
             class="message__text py-2 px-4 rounded-3xl"
-            :class="{ message__text_round: message.showUser }"
+            :class="{ message__text_round: message.prev_current }"
         >
             {{ message.text }}
         </div>

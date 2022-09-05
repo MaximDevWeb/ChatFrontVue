@@ -11,13 +11,19 @@ export interface Room {
 }
 
 export interface Message {
+    id: number;
     user: {
         id: number;
-        login: string;
         full_name: string;
         avatar: string;
     };
     text: string;
     created_at: string;
-    showUser?: boolean;
+    prev_current?: boolean;
+}
+
+export interface dataMessage {
+    user_id: number;
+    room_id: number;
+    text: string;
 }

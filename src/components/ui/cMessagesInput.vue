@@ -1,32 +1,48 @@
 <script setup lang="ts">
+/**
+ * Компонент редактора сообщений
+ */
+
 import { useUserStore } from '@/stores/user';
 import { computed, ref } from 'vue';
 import type { User } from '@/interfaces/auth';
 import CIcon from '@/components/icons/cIcon.vue';
 import { useChatStore } from '@/stores/chats';
-import Http from '@/classes/Http';
+import type { dataMessage } from '@/interfaces/caht';
 
+/**
+ * Загрузка состояний
+ */
 const userStore = useUserStore();
 const chatStore = useChatStore();
 
-const message = ref<String>('');
+/**
+ * Переменная с содержимым сообщения
+ */
+const message = ref<string>('');
 
+/**
+ * Пользователь текущей сессии
+ */
 const user = computed(() => {
     return userStore.getUser as User;
 });
 
+/**
+ * Метод отправки сообщения
+ */
 const sendMessage = (): void => {
-    const data = {
-        subject: chatStore.currentChat?.subject.contact_id,
-        type: chatStore.currentChat?.type,
-        text: message.value,
-    };
+    if (userStore.getUser && chatStore.getRoom) {
+        const data: dataMessage = {
+            user_id: userStore.getUser.id,
+            room_id: chatStore.getRoom.id,
+            text: message.value,
+        };
 
-    Http.inst.post('chat/manager', data).then(() => {
-        console.log('Hello');
-    });
-
-    message.value = '';
+        chatStore.sendMessage(data)?.then(() => {
+            message.value = '';
+        });
+    }
 };
 </script>
 
