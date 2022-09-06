@@ -72,7 +72,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <perfect-scrollbar class="messages__list my-4 pr-4">
+    <perfect-scrollbar class="messages__list my-2 pr-4">
         <div class="messages__wrap" v-if="messages.length">
             <c-message-item
                 v-for="message in messages"
@@ -87,14 +87,42 @@ onMounted(() => {
 
 <style lang="scss">
 .messages__list {
+    position: relative;
     height: 100%;
     overflow: auto;
+
+    &:before,
+    &:after {
+        content: '';
+        position: sticky;
+        display: block;
+        height: 20px;
+        z-index: 10;
+    }
+
+    &:before {
+        top: 0;
+        background: linear-gradient(
+            180deg,
+            rgba(22, 23, 25, 1) 0%,
+            rgba(0, 212, 255, 0) 100%
+        );
+    }
+
+    &:after {
+        bottom: 0;
+        background: linear-gradient(
+            0deg,
+            rgba(22, 23, 25, 1) 0%,
+            rgba(0, 212, 255, 0) 100%
+        );
+    }
 }
 
 .messages__wrap {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    min-height: 100%;
+    min-height: calc(100% - 40px);
 }
 </style>
