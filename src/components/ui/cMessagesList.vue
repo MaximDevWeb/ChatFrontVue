@@ -5,7 +5,7 @@
  */
 
 import { useChatStore } from '@/stores/chats';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, onUpdated, ref, watch } from 'vue';
 import type { Message } from '@/interfaces/caht';
 import CMessageItem from '@/components/ui/cMessageItem.vue';
 import CPreloader from '@/components/ui/cPreloader.vue';
@@ -16,11 +16,6 @@ import type { MessageData } from '@/interfaces/pusher';
  * Загрузка состояний
  */
 const chatStore = useChatStore();
-
-/**
- * Элемент для хака прокрутки вниз
- */
-const bottomScroll = ref<null | HTMLDivElement>(null);
 
 /**
  * Создаем канал для прослушивания
@@ -55,22 +50,12 @@ const roomId = computed(() => {
 });
 
 /**
- * Следим за обновлением сообщений
- * и прокручиваем вниз при появлении
- * новых
- */
-watch(messages, async () => {
-    if (bottomScroll.value) {
-        bottomScroll.value.scrollIntoView();
-    }
-});
-
-/**
  * Следим за ид текущего чата и оперативно
  * меняем его в Pusher при изменении
  */
-watch(roomId, async () => {
-    channel.bind('messages.created.' + roomId.value, (data: MessageData) => {
+watch(roomId, async (newRoomId, oldRoomId) => {
+    channel.unbind('messages.created.' + oldRoomId);
+    channel.bind('messages.created.' + newRoomId, (data: MessageData) => {
         chatStore.addMessage(data.message);
     });
 });
@@ -87,19 +72,17 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="messages__list my-4 pr-4">
-        <perfect-scrollbar class="messages__wrap" v-if="messages.length">
+    <perfect-scrollbar class="messages__list my-4 pr-4">
+        <div class="messages__wrap" v-if="messages.length">
             <c-message-item
                 v-for="message in messages"
                 :key="message.id"
                 :message="message"
             />
-        </perfect-scrollbar>
+        </div>
 
         <c-preloader v-else />
-
-        <div ref="bottomScroll" class="bottom__scroll"></div>
-    </div>
+    </perfect-scrollbar>
 </template>
 
 <style lang="scss">
@@ -113,15 +96,5 @@ onMounted(() => {
     flex-direction: column;
     justify-content: flex-end;
     min-height: 100%;
-}
-
-.bottom__scroll {
-    height: 1px;
-    opacity: 0;
-    overflow: hidden;
-
-    &:before {
-        content: 'scroll';
-    }
 }
 </style>

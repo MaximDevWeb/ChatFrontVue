@@ -3,7 +3,6 @@ import type { Room, dataMessage } from '@/interfaces/caht';
 import type { Message } from '@/interfaces/caht';
 import Http from '@/classes/Http';
 import { useToastStore } from '@/stores/toast';
-import type { AxiosPromise, AxiosResponse } from 'axios';
 
 const toastStore = useToastStore();
 

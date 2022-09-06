@@ -3,7 +3,7 @@
  * Компонент вывода одного сообщения
  */
 import type { Message } from '@/interfaces/caht';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { DateTime } from 'luxon';
 import { useUserStore } from '@/stores/user';
 import CMessageItemInfo from '@/components/ui/cMessageItemInfo.vue';
@@ -39,6 +39,14 @@ const messageClass = computed((): string => {
     return props.message.user.id === userStore.getUser?.id
         ? 'message__item_left'
         : 'message__item_right';
+});
+
+/**
+ * Прокрутка списка в конец чата
+ */
+onMounted(() => {
+    const item = document.querySelectorAll('.message__item');
+    item[item.length - 1].scrollIntoView();
 });
 </script>
 
