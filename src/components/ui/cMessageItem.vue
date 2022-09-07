@@ -7,6 +7,7 @@ import { computed, onMounted } from 'vue';
 import { DateTime } from 'luxon';
 import { useUserStore } from '@/stores/user';
 import CMessageItemInfo from '@/components/ui/cMessageItemInfo.vue';
+import CMessageItemOption from '@/components/ui/CMessageItemOption.vue';
 
 /**
  * Пареметры компонента
@@ -44,7 +45,7 @@ const messageClass = computed((): string => {
 /**
  * Прокрутка списка в конец чата
  */
-onMounted(() => {
+onMounted((): void => {
     const item = document.querySelectorAll('.message__item');
     item[item.length - 1].scrollIntoView();
 });
@@ -53,6 +54,8 @@ onMounted(() => {
 <template>
     <div class="message__item mb-4" :class="[messageClass]">
         <c-message-item-info :user="message.user" v-if="message.prev_current" />
+
+        <c-message-item-option :message="message" />
 
         <div class="message__time text-sm">
             {{ time }}
@@ -76,6 +79,12 @@ onMounted(() => {
     justify-content: flex-end;
     flex-wrap: wrap;
     padding: 0 calc(40px + 0.5rem);
+
+    &:hover {
+        .message__option {
+            opacity: 1;
+        }
+    }
 }
 
 .message__time {

@@ -19,12 +19,10 @@ const deleteContact = () => {
     confirmStore.setConfirm({
         title: `Удалить ${props.item.login}?`,
         message: 'Подтвердите удаление контакта ',
-        callback: deleteCallback,
+        callback: () => {
+            contactStore.deleteContact(props.item);
+        },
     });
-};
-
-const deleteCallback = (): void => {
-    contactStore.deleteContact(props.item);
 };
 
 const chatCreate = (): void => {

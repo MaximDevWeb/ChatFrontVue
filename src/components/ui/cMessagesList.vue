@@ -10,7 +10,7 @@ import type { Message } from '@/interfaces/caht';
 import CMessageItem from '@/components/ui/cMessageItem.vue';
 import CPreloader from '@/components/ui/cPreloader.vue';
 import PusherSocket from '@/classes/PusherSocket';
-import type { MessageData } from '@/interfaces/pusher';
+import type { MessageData, MessageId } from '@/interfaces/pusher';
 
 /**
  * Загрузка состояний
@@ -55,8 +55,13 @@ const roomId = computed(() => {
  */
 watch(roomId, async (newRoomId, oldRoomId) => {
     channel.unbind('messages.created.' + oldRoomId);
+    channel.unbind('messages.deleted.' + oldRoomId);
+
     channel.bind('messages.created.' + newRoomId, (data: MessageData) => {
         chatStore.addMessage(data.message);
+    });
+    channel.bind('messages.deleted.' + roomId.value, (data: MessageId) => {
+        chatStore.removeMessage(data.id);
     });
 });
 
@@ -67,6 +72,9 @@ watch(roomId, async (newRoomId, oldRoomId) => {
 onMounted(() => {
     channel.bind('messages.created.' + roomId.value, (data: MessageData) => {
         chatStore.addMessage(data.message);
+    });
+    channel.bind('messages.deleted.' + roomId.value, (data: MessageId) => {
+        chatStore.removeMessage(data.id);
     });
 });
 </script>
