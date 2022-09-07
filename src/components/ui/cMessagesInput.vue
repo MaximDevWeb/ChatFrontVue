@@ -28,21 +28,28 @@ const user = computed(() => {
     return userStore.getUser as User;
 });
 
+const input = computed(() => {
+    return chatStore.getMessageInput;
+});
+
 /**
  * Метод отправки сообщения
  */
 const sendMessage = (): void => {
-    if (userStore.getUser && chatStore.getRoom) {
-        const data: dataMessage = {
-            user_id: userStore.getUser.id,
-            room_id: chatStore.getRoom.id,
-            text: message.value,
-        };
+    if (!userStore.getUser || !chatStore.getRoom) return;
 
-        chatStore.sendMessage(data)?.then(() => {
-            message.value = '';
-        });
-    }
+    const data = {
+        id: input.value.id,
+        user_id: userStore.getUser.id,
+        room_id: chatStore.getRoom.id,
+        text: input.value.text,
+    };
+
+    chatStore.sendMessage(data);
+};
+
+const cleanInput = () => {
+    chatStore.cleanMessageInput();
 };
 </script>
 
@@ -58,9 +65,13 @@ const sendMessage = (): void => {
             type="text"
             placeholder="Ваше сообщение..."
             class="mess-input__input mx-4"
-            v-model="message"
+            v-model="input.text"
             @keypress.enter="sendMessage"
         />
+
+        <div class="flex mr-2" v-if="input.id">
+            <c-icon name="close" class="mess-input__icon" @click="cleanInput" />
+        </div>
 
         <div class="flex mr-4">
             <c-icon name="microphone" class="mess-input__icon" />

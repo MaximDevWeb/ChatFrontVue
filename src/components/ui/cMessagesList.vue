@@ -56,12 +56,16 @@ const roomId = computed(() => {
 watch(roomId, async (newRoomId, oldRoomId) => {
     channel.unbind('messages.created.' + oldRoomId);
     channel.unbind('messages.deleted.' + oldRoomId);
+    channel.unbind('messages.updated.' + oldRoomId);
 
     channel.bind('messages.created.' + newRoomId, (data: MessageData) => {
         chatStore.addMessage(data.message);
     });
     channel.bind('messages.deleted.' + roomId.value, (data: MessageId) => {
         chatStore.removeMessage(data.id);
+    });
+    channel.bind('messages.updated.' + roomId.value, (data: MessageData) => {
+        chatStore.updateMessage(data.message);
     });
 });
 
@@ -75,6 +79,9 @@ onMounted(() => {
     });
     channel.bind('messages.deleted.' + roomId.value, (data: MessageId) => {
         chatStore.removeMessage(data.id);
+    });
+    channel.bind('messages.updated.' + roomId.value, (data: MessageData) => {
+        chatStore.updateMessage(data.message);
     });
 });
 </script>

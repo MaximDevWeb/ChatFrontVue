@@ -5,6 +5,8 @@ import Http from '@/classes/Http';
 import { useToastStore } from '@/stores/toast';
 import { useConfirmStore } from '@/stores/confirm';
 import _ from 'lodash';
+import { useUserStore } from '@/stores/user';
+import type { AxiosPromise } from 'axios';
 
 const toastStore = useToastStore();
 const confirmStore = useConfirmStore();
@@ -14,11 +16,16 @@ export const useChatStore = defineStore('chat', {
         room: <Room | null>null,
         rooms: [] as Array<Room>,
         messages: [] as Array<Message>,
+        messageInput: {
+            id: 0,
+            text: '',
+        },
     }),
     getters: {
         getRoom: (state) => state.room,
         getRooms: (state) => state.rooms,
         getMessages: (state) => state.messages,
+        getMessageInput: (state) => state.messageInput,
     },
     actions: {
         setRoom(room: Room): void {
@@ -46,8 +53,25 @@ export const useChatStore = defineStore('chat', {
                     });
             }
         },
+        setMessageInput(message: Message) {
+            this.messageInput.text = message.text;
+            this.messageInput.id = message.id;
+        },
+        cleanMessageInput() {
+            this.messageInput.text = '';
+            this.messageInput.id = 0;
+        },
         addMessage(message: Message) {
             this.messages.push(message);
+        },
+        updateMessage(message: Message) {
+            const found: Message | undefined = this.messages.find((item) => {
+                return item.id === message.id;
+            });
+
+            if (found) {
+                found.text = message.text;
+            }
         },
         removeMessage(id: number) {
             _.remove(this.messages, (item) => {
@@ -74,8 +98,24 @@ export const useChatStore = defineStore('chat', {
         sendMessage(message: dataMessage) {
             if (!this.room) return;
 
-            return Http.inst
-                .post(`chat/room/${this.room.id}/messages`, message)
+            let request: AxiosPromise;
+
+            if (message.id !== 0) {
+                request = Http.inst.put(
+                    `chat/room/${this.room.id}/messages/${message.id}`,
+                    message
+                );
+            } else {
+                request = Http.inst.post(
+                    `chat/room/${this.room.id}/messages`,
+                    message
+                );
+            }
+
+            request
+                .then(() => {
+                    this.cleanMessageInput();
+                })
                 .catch(() => {
                     toastStore.addToast({
                         title: 'Ошибка отправки',

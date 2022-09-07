@@ -40,7 +40,9 @@ const copyMessage = (): void => {
 /**
  * Метод редактирования сообщения
  */
-const editMessage = () => {};
+const editMessage = () => {
+    chatStore.setMessageInput(props.message);
+};
 
 /**
  * Метод удаления сообщения

@@ -23,6 +23,7 @@ export interface Message {
 }
 
 export interface dataMessage {
+    id: number;
     user_id: number;
     room_id: number;
     text: string;
