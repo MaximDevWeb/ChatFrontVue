@@ -68,7 +68,7 @@ const confirmCancel = (): void => {
 .confirm__modal {
     width: 350px;
     padding: 0.75rem 1.5rem;
-    background-color: variable.$light-gray;
+    background-color: variable.$gray;
 }
 
 .confirm__buttons {

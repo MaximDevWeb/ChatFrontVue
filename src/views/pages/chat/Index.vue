@@ -5,7 +5,7 @@ import CIcon from '@/components/icons/cIcon.vue';
 import CSearch from '@/components/ui/cSearch.vue';
 import { useChatStore } from '@/stores/chats';
 import type { Room } from '@/interfaces/caht';
-import RoomItem from '@/components/ui/RoomItem.vue';
+import RoomItem from '@/components/ui/cRoomItem.vue';
 
 const chatsStore = useChatStore();
 const search: Ref<string> = ref('');
