@@ -37,6 +37,13 @@ export const useChatStore = defineStore('chat', {
                 this.rooms = response.data.rooms;
             });
         },
+        createPersonalRoom(contact_id: number) {
+            return Http.inst
+                .post('chat/rooms/add-personal', { id: contact_id })
+                .then((response) => {
+                    this.setRoom(response.data.room);
+                });
+        },
         loadMessages(): void {
             if (this.room) {
                 Http.inst

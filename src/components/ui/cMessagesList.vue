@@ -87,21 +87,25 @@ onMounted(() => {
 </script>
 
 <template>
-    <perfect-scrollbar class="messages__list my-2 pr-4">
-        <div class="messages__wrap" v-if="messages.length">
+    <perfect-scrollbar class="messages__list my-2 pr-4" v-if="messages.length">
+        <div class="messages__wrap">
             <c-message-item
                 v-for="message in messages"
                 :key="message.id"
                 :message="message"
             />
         </div>
-
-        <c-preloader v-else />
     </perfect-scrollbar>
+
+    <div class="messages__list_empty my-2 pr-4" v-else>
+        <p class="uppercase">У Вас нет сообщений</p>
+        <p class="opacity-60">Отправьте сообщение, чтобы начать чат</p>
+    </div>
 </template>
 
 <style lang="scss">
-.messages__list {
+.messages__list,
+.messages__list_empty {
     position: relative;
     height: 100%;
     overflow: auto;
@@ -139,5 +143,12 @@ onMounted(() => {
     flex-direction: column;
     justify-content: flex-end;
     min-height: calc(100% - 40px);
+}
+
+.messages__list_empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 </style>

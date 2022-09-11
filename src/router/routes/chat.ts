@@ -39,6 +39,14 @@ const auth: Array<RouteRecordRaw> = [
                 },
             },
             {
+                path: 'add',
+                name: 'chat-add',
+                component: () => import('../../views/pages/chat/RoomAdd.vue'),
+                meta: {
+                    title: 'Создать чат',
+                },
+            },
+            {
                 path: 'settings',
                 name: 'settings',
                 component: () => import('../../views/pages/chat/Settings.vue'),

@@ -25,7 +25,7 @@ onMounted(() => {
             <span class="block-head__text">Сообщения</span>
 
             <div class="block-head__bts">
-                <router-link to="/chat/contacts/add">
+                <router-link to="/chat/add">
                     <c-icon name="new-chat" class="block-head__btn" />
                 </router-link>
             </div>

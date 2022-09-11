@@ -26,10 +26,9 @@ const deleteContact = () => {
 };
 
 const chatCreate = (): void => {
-    chatStore.setCurrentChat({
-        subject: props.item,
-        type: 'personal',
-    });
+    chatStore
+        .createPersonalRoom(props.item.contact_id)
+        .then(() => router.push('/chat'));
 };
 </script>
 
