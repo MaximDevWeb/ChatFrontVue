@@ -5,10 +5,9 @@
  */
 
 import { useChatStore } from '@/stores/chats';
-import { computed, onMounted, onUpdated, ref, watch } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import type { Message } from '@/interfaces/caht';
 import CMessageItem from '@/components/ui/cMessageItem.vue';
-import CPreloader from '@/components/ui/cPreloader.vue';
 import PusherSocket from '@/classes/PusherSocket';
 import type { MessageData, MessageId } from '@/interfaces/pusher';
 

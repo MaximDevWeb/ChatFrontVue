@@ -1,4 +1,9 @@
 <script setup lang="ts">
+/**
+ * Компонент для выбора
+ * типа создваемого чата
+ */
+
 import CIcon from '@/components/icons/cIcon.vue';
 import personalImage from '@/assets/images/personal.svg';
 import groupImage from '@/assets/images/group.svg';
@@ -29,7 +34,7 @@ import groupImage from '@/assets/images/group.svg';
                 <p class="text-lg">Личный чат</p>
             </router-link>
 
-            <router-link to="/chat/create" class="room-add__link rounded-lg">
+            <router-link to="/chat/add/group" class="room-add__link rounded-lg">
                 <img
                     :src="groupImage"
                     alt="Групповой чат"
