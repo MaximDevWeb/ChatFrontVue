@@ -18,6 +18,12 @@ a.link {
     }
 }
 
+.input_hidden {
+    position: fixed;
+    top: -1000px;
+    opacity: 0;
+}
+
 // Block head style
 
 .block-head {

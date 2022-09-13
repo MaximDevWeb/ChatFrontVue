@@ -39,4 +39,8 @@ export default class CFile {
 
         return Http.inst.post('user/avatar', data);
     }
+
+    public getFile(): File {
+        return this.file;
+    }
 }

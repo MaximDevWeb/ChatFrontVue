@@ -5,8 +5,8 @@ import Http from '@/classes/Http';
 import { useToastStore } from '@/stores/toast';
 import { useConfirmStore } from '@/stores/confirm';
 import _ from 'lodash';
-import { useUserStore } from '@/stores/user';
 import type { AxiosPromise } from 'axios';
+import type { FormChatGroup } from '@/interfaces/form';
 
 const toastStore = useToastStore();
 const confirmStore = useConfirmStore();
@@ -36,6 +36,31 @@ export const useChatStore = defineStore('chat', {
             Http.inst.get('chat/rooms/my').then((response) => {
                 this.rooms = response.data.rooms;
             });
+        },
+        createPersonalRoom(contact_id: number) {
+            return Http.inst
+                .post('chat/rooms/add-personal', { id: contact_id })
+                .then((response) => {
+                    this.setRoom(response.data.room);
+                });
+        },
+        createGroupRoom(data: FormChatGroup) {
+            const formData = new FormData();
+            formData.append('name', data.name);
+
+            if (data.avatar) {
+                formData.append('avatar', data.avatar);
+            }
+
+            data.participants.forEach((item) =>
+                formData.append('participants[]', item.toString())
+            );
+
+            return Http.inst
+                .post('chat/rooms/add-group', formData)
+                .then((response) => {
+                    this.setRoom(response.data.room);
+                });
         },
         loadMessages(): void {
             if (this.room) {
