@@ -1,3 +1,5 @@
+import type { Contact } from '@/interfaces/contacts';
+
 export enum typeChat {
     GROUP = 'group',
     PERSONAL = 'personal',
@@ -8,6 +10,8 @@ export interface Room {
     name: string;
     avatar: string;
     type: typeChat;
+    created_at: string;
+    participants: [Contact];
 }
 
 export interface Message {

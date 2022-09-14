@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
 import type { Room, dataMessage } from '@/interfaces/caht';
 import type { Message } from '@/interfaces/caht';
+import type { FormChatGroup } from '@/interfaces/former';
 import Http from '@/classes/Http';
 import { useToastStore } from '@/stores/toast';
 import { useConfirmStore } from '@/stores/confirm';
 import _ from 'lodash';
 import type { AxiosPromise } from 'axios';
-import type { FormChatGroup } from '@/interfaces/form';
 
 const toastStore = useToastStore();
 const confirmStore = useConfirmStore();
@@ -20,17 +20,23 @@ export const useChatStore = defineStore('chat', {
             id: 0,
             text: '',
         },
+        detailShow: false,
     }),
     getters: {
         getRoom: (state) => state.room,
         getRooms: (state) => state.rooms,
         getMessages: (state) => state.messages,
         getMessageInput: (state) => state.messageInput,
+        getDetailShow: (state) => state.detailShow,
     },
     actions: {
         setRoom(room: Room): void {
             this.room = room;
+            this.detailShow = false;
             this.loadMessages();
+        },
+        setRoomDetail(isShow: boolean) {
+            this.detailShow = isShow;
         },
         loadRooms(): void {
             Http.inst.get('chat/rooms/my').then((response) => {
@@ -52,7 +58,7 @@ export const useChatStore = defineStore('chat', {
                 formData.append('avatar', data.avatar);
             }
 
-            data.participants.forEach((item) =>
+            data.participants.forEach((item: number) =>
                 formData.append('participants[]', item.toString())
             );
 

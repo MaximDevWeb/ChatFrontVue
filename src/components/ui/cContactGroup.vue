@@ -10,7 +10,7 @@ import { computed, onMounted, ref, watch } from 'vue';
 import type { Ref } from 'vue';
 import type { Contact } from '@/interfaces/contacts';
 import CCheckBoxMulti from '@/components/ui/cCheckBoxMulti.vue';
-import type { FormCheckBoxMulti } from '@/interfaces/form';
+import type { FormCheckBoxMulti } from '@/interfaces/former';
 import _ from 'lodash';
 
 /**

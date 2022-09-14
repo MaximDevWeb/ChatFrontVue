@@ -22,6 +22,14 @@ const chatStore = useChatStore();
 const room = computed(() => {
     return chatStore.getRoom as Room;
 });
+
+/**
+ * Функция раскрытия окна
+ * информации о чате
+ */
+const detailShow = (): void => {
+    chatStore.setRoomDetail(true);
+};
 </script>
 
 <template>
@@ -52,7 +60,11 @@ const room = computed(() => {
         </div>
 
         <div>
-            <c-icon name="category" class="messages__icon" />
+            <c-icon
+                name="category"
+                class="messages__icon"
+                @click="detailShow"
+            />
         </div>
     </div>
 </template>
