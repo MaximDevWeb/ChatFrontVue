@@ -8,7 +8,7 @@ import CIcon from '@/components/icons/cIcon.vue';
 import CAvatarGroupEditor from '@/components/ui/cAvatarGroupEditor.vue';
 import CEditable from '@/components/ui/cEditable.vue';
 import { reactive } from 'vue';
-import type { FormChatGroup } from '@/interfaces/form';
+import type { FormChatGroup } from '@/interfaces/former';
 import CButton from '@/components/ui/cButton.vue';
 import CContactGroup from '@/components/ui/cContactGroup.vue';
 import { useChatStore } from '@/stores/chats';

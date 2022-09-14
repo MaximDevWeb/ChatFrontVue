@@ -11,6 +11,7 @@ import CConfirm from '@/components/ui/cConfirm.vue';
 import CMessagesBox from '@/components/ui/cMessagesBox.vue';
 import { useChatStore } from '@/stores/chats';
 import CMessagesBoxEmpty from '@/components/ui/cMessagesBoxEmpty.vue';
+import CChatDetail from '@/components/ui/cChatDetail.vue';
 
 const userStore = useUserStore();
 const chatStore = useChatStore();
@@ -55,8 +56,10 @@ onMounted((): void => {
         </div>
 
         <div class="chats">
-            <c-messages-box v-if="room" />
-            <c-messages-box-empty v-else />
+            <c-messages-box v-if="room" class="mr-8" />
+            <c-messages-box-empty v-else class="mr-8" />
+
+            <c-chat-detail />
         </div>
 
         <div class="options"></div>
@@ -84,6 +87,7 @@ onMounted((): void => {
     bottom: 1rem;
     left: calc(340px + 5.5rem);
     right: 0;
+    display: flex;
     padding: 0 2rem;
 }
 </style>
