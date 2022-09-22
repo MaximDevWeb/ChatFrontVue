@@ -8,13 +8,14 @@ import { computed, ref } from 'vue';
 import type { User } from '@/interfaces/auth';
 import CIcon from '@/components/icons/cIcon.vue';
 import { useChatStore } from '@/stores/chats';
-import type { dataMessage } from '@/interfaces/caht';
+import { useRecorderStore } from '@/stores/recorder';
 
 /**
  * Загрузка состояний
  */
 const userStore = useUserStore();
 const chatStore = useChatStore();
+const recorderStore = useRecorderStore();
 
 /**
  * Переменная с содержимым сообщения
@@ -28,12 +29,23 @@ const user = computed(() => {
     return userStore.getUser as User;
 });
 
+/**
+ * Переменная с текущим вводом
+ */
 const input = computed(() => {
     return chatStore.getMessageInput;
 });
 
 /**
- * Метод отправки сообщения
+ * Переменная с сотстоянием
+ * отоброжения записи голосового сообщения
+ */
+const recorderHide = computed((): boolean => {
+    return recorderStore.isHide;
+});
+
+/**
+ * Функция отправки сообщения
  */
 const sendMessage = (): void => {
     if (!userStore.getUser || !chatStore.getRoom) return;
@@ -48,13 +60,28 @@ const sendMessage = (): void => {
     chatStore.sendMessage(data);
 };
 
+/**
+ * Функция очистки сообщения
+ */
 const cleanInput = () => {
     chatStore.cleanMessageInput();
+};
+
+/**
+ * Функция изменения отоброжения
+ * записи голосового сообщения
+ */
+const showRecorder = () => {
+    recorderStore.setHide(false);
 };
 </script>
 
 <template>
-    <div class="mess-input p-3 rounded-2xl" v-if="user.id">
+    <div
+        class="mess-input p-3 rounded-2xl"
+        v-if="user.id"
+        :class="{ 'mess-input_hide': !recorderHide }"
+    >
         <img
             :src="user.avatar.link"
             :alt="user.login"
@@ -74,8 +101,12 @@ const cleanInput = () => {
         </div>
 
         <div class="flex mr-4">
-            <c-icon name="microphone" class="mess-input__icon" />
             <c-icon name="add_file" class="mess-input__icon" />
+            <c-icon
+                name="microphone"
+                class="mess-input__icon"
+                @click="showRecorder"
+            />
         </div>
 
         <div class="mess-input_send" @click="sendMessage">
@@ -90,6 +121,11 @@ const cleanInput = () => {
 .mess-input {
     display: flex;
     background-color: variable.$gray;
+    transition: transform 0.3s;
+}
+
+.mess-input_hide {
+    transform: translateY(-60px);
 }
 
 .mess-input__avatar {

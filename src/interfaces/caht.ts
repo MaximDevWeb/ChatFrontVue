@@ -32,3 +32,9 @@ export interface dataMessage {
     room_id: number;
     text: string;
 }
+
+export interface Timer {
+    minutes: number;
+    seconds: number;
+    milliseconds: number;
+}

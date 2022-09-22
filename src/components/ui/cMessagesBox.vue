@@ -1,7 +1,12 @@
 <script setup lang="ts">
+/**
+ * Компонент обертка для чата
+ */
+
 import CMessagesHeader from '@/components/ui/cMessagesHeader.vue';
 import CMessagesInput from '@/components/ui/cMessagesInput.vue';
 import CMessagesList from '@/components/ui/cMessagesList.vue';
+import CRecorderBox from '@/components/ui/cRecorderBox.vue';
 </script>
 
 <template>
@@ -10,7 +15,10 @@ import CMessagesList from '@/components/ui/cMessagesList.vue';
 
         <c-messages-list />
 
-        <c-messages-input />
+        <div class="messages__inputs">
+            <c-messages-input />
+            <c-recorder-box />
+        </div>
     </div>
 </template>
 
@@ -20,5 +28,12 @@ import CMessagesList from '@/components/ui/cMessagesList.vue';
     flex-direction: column;
     height: 100%;
     width: 100%;
+}
+
+.messages__inputs {
+    position: relative;
+    overflow: hidden;
+    flex: none;
+    height: 60px;
 }
 </style>
