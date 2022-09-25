@@ -84,6 +84,10 @@ a.link {
     animation: flicker 0.8s ease infinite;
 }
 
+.rotate {
+    animation: rotate 1s ease infinite forwards;
+}
+
 @keyframes flicker {
     0% {
         opacity: 1;
@@ -93,5 +97,14 @@ a.link {
     }
     100% {
         opacity: 1;
+    }
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0);
+    }
+    100% {
+        transform: rotate(360deg);
     }
 }

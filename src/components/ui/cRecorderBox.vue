@@ -7,16 +7,21 @@
 import { useUserStore } from '@/stores/user';
 import { useChatStore } from '@/stores/chats';
 import { useRecorderStore } from '@/stores/recorder';
-import { computed, onMounted, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import type { User } from '@/interfaces/auth';
 import CIcon from '@/components/icons/cIcon.vue';
 import CRecorder from '@/components/ui/cRecorder.vue';
+import CRecordFile from '@/classes/File/cRecordFile';
+import { useToastStore } from '@/stores/toast';
+import type { AxiosResponse } from 'axios';
+import { dataMessage } from '@/interfaces/caht';
 
 /**
  * Загрузка состояний
  */
 const userStore = useUserStore();
 const chatStore = useChatStore();
+const toastStore = useToastStore();
 const recorderStore = useRecorderStore();
 
 /**
@@ -24,6 +29,23 @@ const recorderStore = useRecorderStore();
  */
 const user = computed(() => {
     return userStore.getUser as User;
+});
+
+const sending = ref(false);
+
+/**
+ * Переменная с записью
+ * голосового сообщения
+ */
+const record = computed((): File | null => {
+    return recorderStore.getRecord;
+});
+
+/**
+ * Переменная с текущим вводом
+ */
+const input = computed(() => {
+    return chatStore.getMessageInput;
 });
 
 /**
@@ -40,6 +62,51 @@ const recorderHide = computed((): boolean => {
  */
 const hideRecorder = () => {
     recorderStore.setHide(true);
+};
+
+/**
+ * Функция отправки
+ * голосового сообщения
+ */
+const sendRecord = () => {
+    if (!userStore.getUser || !chatStore.getRoom || !record.value) return;
+
+    sending.value = true;
+
+    const recordFile = new CRecordFile(record.value);
+    const validate = recordFile.validate();
+    const data: dataMessage = {
+        id: input.value.id,
+        user_id: userStore.getUser.id,
+        room_id: chatStore.getRoom.id,
+    };
+
+    if (!validate.result) {
+        toastStore.addToast({
+            title: 'Ошибка валидации файла',
+            message: validate.errors ?? 'Невозможно загрузить файл',
+            type: 'danger',
+        });
+    }
+
+    recordFile
+        .upload()
+        .then((response) => {
+            sending.value = false;
+            recorderStore.setRecord(null);
+
+            data.type = response.data.type;
+            data.file_id = response.data.file_id;
+
+            chatStore.sendMessage(data);
+        })
+        .catch(() => {
+            toastStore.addToast({
+                title: 'Сообщение не отправлено',
+                message: 'Ошибка отправки сообщения',
+                type: 'danger',
+            });
+        });
 };
 </script>
 
@@ -67,8 +134,9 @@ const hideRecorder = () => {
             />
         </div>
 
-        <div class="mess-input_send" @click="sendMessage">
-            <c-icon name="send" class="mess-input__icon" />
+        <div class="mess-input_send" @click="sendRecord">
+            <c-icon v-if="!sending" name="send" class="mess-input__icon" />
+            <c-icon v-else name="load" class="mess-input__icon rotate" />
         </div>
     </div>
 </template>

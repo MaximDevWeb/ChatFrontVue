@@ -5,7 +5,7 @@ import type { Ref } from 'vue';
 import { useRecorderStore } from '@/stores/recorder';
 import CIcon from '@/components/icons/cIcon.vue';
 
-let recordStore = useRecorderStore();
+let recorderStore = useRecorderStore();
 
 let waveSurfer: WaveSurfer;
 let played = ref(false);
@@ -30,7 +30,7 @@ onMounted(() => {
 });
 
 const reloadRecord = () => {
-    waveSurfer.load(recordStore.getRecord);
+    waveSurfer.load(recorderStore.getRecordURL);
 };
 
 const playRecord = () => {
@@ -44,7 +44,7 @@ const stopRecord = () => {
 };
 
 const deleteRecord = () => {
-    recordStore.setRecord('');
+    recorderStore.setRecord(null);
 };
 
 const renderTimer = () => {

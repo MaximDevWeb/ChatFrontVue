@@ -16,7 +16,7 @@ import { useToastStore } from '@/stores/toast';
 /**
  * Загрузка состояний
  */
-const recordStore = useRecorderStore();
+const recorderStore = useRecorderStore();
 const toastStore = useToastStore();
 
 /**
@@ -29,7 +29,7 @@ const recording: Ref<boolean> = ref(false);
  * голосового сообщения
  */
 const record = computed((): string => {
-    return recordStore.getRecord;
+    return recorderStore.getRecordURL;
 });
 
 /**
@@ -57,10 +57,12 @@ const startRecord = () => {
             };
 
             media.value.onstop = () => {
-                const blob = new Blob(blobArray, { type: 'audio/mp3' });
+                const blob = new File(blobArray, 'record.webm', {
+                    type: 'audio/mpeg',
+                });
                 blobArray = [];
 
-                recordStore.setRecord(window.URL.createObjectURL(blob));
+                recorderStore.setRecord(blob);
             };
 
             recording.value = true;

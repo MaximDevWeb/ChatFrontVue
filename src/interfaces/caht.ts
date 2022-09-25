@@ -1,4 +1,5 @@
 import type { Contact } from '@/interfaces/contacts';
+import type { FileType } from '@/interfaces/file';
 
 export enum typeChat {
     GROUP = 'group',
@@ -27,10 +28,12 @@ export interface Message {
 }
 
 export interface dataMessage {
-    id: number;
+    id?: number;
+    type?: FileType;
     user_id: number;
     room_id: number;
-    text: string;
+    text?: string;
+    file_id?: number;
 }
 
 export interface Timer {
