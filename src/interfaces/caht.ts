@@ -27,6 +27,7 @@ export interface Message {
     file: FileMessage;
     created_at: string;
     prev_current?: boolean;
+    prev_date?: boolean;
 }
 
 export interface dataMessage {

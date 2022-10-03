@@ -4,14 +4,11 @@
  */
 
 import type { Message } from '@/interfaces/caht';
-import {
-    computed,
-    defineAsyncComponent,
-    defineComponent,
-    onMounted,
-} from 'vue';
+import { computed, defineAsyncComponent } from 'vue';
 import { useUserStore } from '@/stores/user';
 import CMessageInfo from '@/components/ui/cMessageInfo.vue';
+import CMessageTime from '@/components/ui/cMessageTime.vue';
+import CMessageDate from '@/components/ui/cMessageDate.vue';
 
 /**
  * Пареметры компонента
@@ -49,6 +46,7 @@ const my = computed((): boolean => {
 </script>
 
 <template>
+    <c-message-date :date="message.created_at" v-if="message.prev_date" />
     <div
         class="message__item mb-3"
         :class="[my ? 'message__item_right' : 'message__item_left']"
@@ -59,7 +57,11 @@ const my = computed((): boolean => {
             v-if="message.prev_current"
         />
 
-        <div :class="[my ? 'message_right' : 'message_left']">
+        <div
+            class="message__wrap"
+            :class="[my ? 'message_right' : 'message_left']"
+        >
+            <c-message-time :time="message.created_at" />
             <div
                 class="message py-2 px-2 rounded-3xl"
                 :class="{ message_round: message.prev_current }"
@@ -89,6 +91,11 @@ const my = computed((): boolean => {
     color: white;
 }
 
+.message__wrap {
+    display: flex;
+    align-items: center;
+}
+
 .message_right {
     .message {
         background-color: variable.$blue;
@@ -100,6 +107,8 @@ const my = computed((): boolean => {
 }
 
 .message_left {
+    flex-direction: row-reverse;
+
     .message {
         background-color: variable.$light-gray;
     }

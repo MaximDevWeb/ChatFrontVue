@@ -10,6 +10,7 @@ import type { Message } from '@/interfaces/caht';
 import PusherSocket from '@/classes/PusherSocket';
 import type { MessageData, MessageId } from '@/interfaces/pusher';
 import CMessage from '@/components/ui/cMessage.vue';
+import { DateTime } from 'luxon';
 
 /**
  * Загрузка состояний
@@ -31,10 +32,16 @@ const channel = PusherSocket.inst.subscribe('messages');
 const messages = computed(() => {
     const messages: Array<Message> = chatStore.getMessages;
     let currentId: Number = 0;
+    let currentDate: DateTime | null = null;
 
     messages.map((item: Message) => {
         item.prev_current = currentId !== item.user.id;
         currentId = item.user.id;
+
+        const date = DateTime.fromISO(item.created_at).startOf('day');
+        item.prev_date = date.toMillis() !== currentDate?.toMillis();
+        currentDate = date;
+
         return item;
     });
 
