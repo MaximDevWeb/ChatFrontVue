@@ -3,6 +3,7 @@ import WaveSurfer from 'wavesurfer.js';
 import { onMounted, ref } from 'vue';
 import { useRecorderStore } from '@/stores/recorder';
 import CIcon from '@/components/icons/cIcon.vue';
+import Helper from '@/classes/Helper';
 
 let recorderStore = useRecorderStore();
 
@@ -51,21 +52,11 @@ const renderTimer = () => {
         waveSurfer.getDuration() - waveSurfer.getCurrentTime()
     );
 
-    let timerStr = padNullStart(Math.floor(time / 60));
+    let timerStr = Helper.String.padNullStart(Math.floor(time / 60));
     timerStr += ':';
-    timerStr += padNullStart(time % 60);
+    timerStr += Helper.String.padNullStart(time % 60);
 
     timer.value = timerStr;
-};
-
-/**
- * Функция добавления ведущего нуля
- *
- * @param value
- */
-const padNullStart = (value: number): string => {
-    const str: string = value.toString();
-    return str.length < 2 ? '0' + str : str;
 };
 
 onMounted(() => {

@@ -6,6 +6,7 @@
 import { reactive, watch } from 'vue';
 import { DateTime, Interval } from 'luxon';
 import type { Timer } from '@/interfaces/caht';
+import Helper from '@/classes/Helper';
 
 /**
  * Пареметры компонента
@@ -75,30 +76,20 @@ const stopTimer = (): void => {
     timer.seconds = 0;
     timer.milliseconds = 0;
 };
-
-/**
- * Функция добавления ведущего нуля
- *
- * @param value
- */
-const padNullStart = (value: number): string => {
-    const str: string = value.toString();
-    return str.length < 2 ? '0' + str : str;
-};
 </script>
 
 <template>
     <div class="rec-timer text-sm mr-2">
         <div class="rec-timer__item">
-            {{ padNullStart(timer.minutes) }}
+            {{ Helper.String.padNullStart(timer.minutes) }}
         </div>
         :
         <div class="rec-timer__item">
-            {{ padNullStart(timer.seconds) }}
+            {{ Helper.String.padNullStart(timer.seconds) }}
         </div>
         :
         <div class="rec-timer__item">
-            {{ padNullStart(timer.milliseconds) }}
+            {{ Helper.String.padNullStart(timer.milliseconds) }}
         </div>
     </div>
 </template>
