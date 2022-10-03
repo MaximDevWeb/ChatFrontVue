@@ -1,6 +1,7 @@
 import type CValidator from '@/classes/File/Validator/cValidator';
 import type { Validate } from '@/interfaces/file';
 import type CUploader from '@/classes/File/Uploader/cUploader';
+import type { AxiosPromise } from 'axios';
 
 export default abstract class CFile {
     protected abstract validator: CValidator;
@@ -16,7 +17,7 @@ export default abstract class CFile {
         return this.validator.validate(this.file);
     }
 
-    upload(): Promise<any> {
+    upload(): AxiosPromise {
         return this.uploader.upload(this.file);
     }
 }

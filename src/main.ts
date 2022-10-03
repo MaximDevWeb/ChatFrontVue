@@ -1,11 +1,13 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import PerfectScrollbar from 'vue3-perfect-scrollbar';
+import '@fancyapps/ui';
 
 import App from './App.vue';
 import router from './router';
 
 import 'vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css';
+import '@fancyapps/ui/dist/fancybox.css';
 import './assets/styles/app.scss';
 
 const app = createApp(App);

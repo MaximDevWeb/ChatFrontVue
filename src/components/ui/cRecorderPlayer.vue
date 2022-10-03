@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import WaveSurfer from 'wavesurfer.js';
 import { onMounted, ref } from 'vue';
-import type { Ref } from 'vue';
 import { useRecorderStore } from '@/stores/recorder';
 import CIcon from '@/components/icons/cIcon.vue';
 

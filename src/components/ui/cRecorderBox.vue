@@ -7,14 +7,13 @@
 import { useUserStore } from '@/stores/user';
 import { useChatStore } from '@/stores/chats';
 import { useRecorderStore } from '@/stores/recorder';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import type { User } from '@/interfaces/auth';
 import CIcon from '@/components/icons/cIcon.vue';
 import CRecorder from '@/components/ui/cRecorder.vue';
 import CRecordFile from '@/classes/File/cRecordFile';
 import { useToastStore } from '@/stores/toast';
-import type { AxiosResponse } from 'axios';
-import { dataMessage } from '@/interfaces/caht';
+import type { dataMessage } from '@/interfaces/caht';
 
 /**
  * Загрузка состояний
@@ -39,13 +38,6 @@ const sending = ref(false);
  */
 const record = computed((): File | null => {
     return recorderStore.getRecord;
-});
-
-/**
- * Переменная с текущим вводом
- */
-const input = computed(() => {
-    return chatStore.getMessageInput;
 });
 
 /**
@@ -76,7 +68,7 @@ const sendRecord = () => {
     const recordFile = new CRecordFile(record.value);
     const validate = recordFile.validate();
     const data: dataMessage = {
-        id: input.value.id,
+        id: 0,
         user_id: userStore.getUser.id,
         room_id: chatStore.getRoom.id,
     };
@@ -87,6 +79,7 @@ const sendRecord = () => {
             message: validate.errors ?? 'Невозможно загрузить файл',
             type: 'danger',
         });
+        return;
     }
 
     recordFile
@@ -96,7 +89,7 @@ const sendRecord = () => {
             recorderStore.setRecord(null);
 
             data.type = response.data.type;
-            data.file_id = response.data.file_id;
+            data.file_id = response.data.id;
 
             chatStore.sendMessage(data);
         })

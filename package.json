@@ -10,6 +10,7 @@
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false"
   },
   "dependencies": {
+    "@fancyapps/ui": "^4.0.31",
     "lodash": "^4.17.21",
     "luxon": "^3.0.1",
     "pinia": "^2.0.16",

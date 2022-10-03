@@ -1,5 +1,5 @@
 import type { Contact } from '@/interfaces/contacts';
-import type { FileType } from '@/interfaces/file';
+import type { FileMessage, FileType } from '@/interfaces/file';
 
 export enum typeChat {
     GROUP = 'group',
@@ -22,7 +22,9 @@ export interface Message {
         full_name: string;
         avatar: string;
     };
+    type: string;
     text: string;
+    file: FileMessage;
     created_at: string;
     prev_current?: boolean;
 }

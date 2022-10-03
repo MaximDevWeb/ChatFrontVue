@@ -9,6 +9,8 @@ import type { User } from '@/interfaces/auth';
 import CIcon from '@/components/icons/cIcon.vue';
 import { useChatStore } from '@/stores/chats';
 import { useRecorderStore } from '@/stores/recorder';
+import CImageUpload from '@/components/ui/cImageUpload.vue';
+import CFileUpload from '@/components/ui/cFileUpload.vue';
 
 /**
  * Загрузка состояний
@@ -101,7 +103,8 @@ const showRecorder = () => {
         </div>
 
         <div class="flex mr-4">
-            <c-icon name="add_file" class="mess-input__icon" />
+            <c-image-upload />
+            <c-file-upload />
             <c-icon
                 name="microphone"
                 class="mess-input__icon"

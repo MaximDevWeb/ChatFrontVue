@@ -7,9 +7,9 @@
 import { useChatStore } from '@/stores/chats';
 import { computed, onMounted, watch } from 'vue';
 import type { Message } from '@/interfaces/caht';
-import CMessageItem from '@/components/ui/cMessageItem.vue';
 import PusherSocket from '@/classes/PusherSocket';
 import type { MessageData, MessageId } from '@/interfaces/pusher';
+import CMessage from '@/components/ui/cMessage.vue';
 
 /**
  * Загрузка состояний
@@ -88,7 +88,7 @@ onMounted(() => {
 <template>
     <perfect-scrollbar class="messages__list my-2 pr-4" v-if="messages.length">
         <div class="messages__wrap">
-            <c-message-item
+            <c-message
                 v-for="message in messages"
                 :key="message.id"
                 :message="message"
