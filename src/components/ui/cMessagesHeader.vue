@@ -9,6 +9,7 @@ import { computed } from 'vue';
 import CIcon from '@/components/icons/cIcon.vue';
 import type { Room } from '@/interfaces/caht';
 import { typeChat } from '@/interfaces/caht';
+import { FileType } from '@/interfaces/file';
 
 /**
  * Загрузка состояний
@@ -24,11 +25,26 @@ const room = computed(() => {
 });
 
 /**
+ * Вычисляем текущие фильтры
+ */
+const filters = computed((): Array<FileType> => {
+    return chatStore.getFilters;
+});
+
+/**
  * Функция раскрытия окна
  * информации о чате
  */
 const detailShow = (): void => {
     chatStore.setRoomDetail(true);
+};
+
+/**
+ * Функция отображения только
+ * сообщений с заданным фильтром
+ */
+const toggleFilter = (filter: FileType) => {
+    chatStore.toggleFilter(filter);
 };
 </script>
 
@@ -55,8 +71,31 @@ const detailShow = (): void => {
         </div>
 
         <div class="messages__attachments flex">
-            <c-icon name="image" class="messages__icon" />
-            <c-icon name="document" class="messages__icon" />
+            <c-icon
+                name="voice"
+                class="messages__icon"
+                @click="toggleFilter(FileType.Record)"
+                :class="{
+                    messages__icon_active: filters.includes(FileType.Record),
+                }"
+            />
+
+            <c-icon
+                name="image"
+                class="messages__icon"
+                @click="toggleFilter(FileType.Image)"
+                :class="{
+                    messages__icon_active: filters.includes(FileType.Image),
+                }"
+            />
+            <c-icon
+                name="document"
+                class="messages__icon"
+                @click="toggleFilter(FileType.File)"
+                :class="{
+                    messages__icon_active: filters.includes(FileType.File),
+                }"
+            />
         </div>
 
         <div>
@@ -108,6 +147,14 @@ const detailShow = (): void => {
 
     &:hover {
         color: white;
+    }
+}
+
+.messages__icon_active {
+    color: variable.$yellow;
+
+    &:hover {
+        color: variable.$yellow;
     }
 }
 </style>

@@ -11,6 +11,7 @@ import PusherSocket from '@/classes/PusherSocket';
 import type { MessageData, MessageId } from '@/interfaces/pusher';
 import CMessage from '@/components/ui/cMessage.vue';
 import { DateTime } from 'luxon';
+import type { FileType } from '@/interfaces/file';
 
 /**
  * Загрузка состояний
@@ -29,7 +30,7 @@ const channel = PusherSocket.inst.subscribe('messages');
  * которое определяет выводить информацию
  * о пользователе или нет
  */
-const messages = computed(() => {
+const messages = computed((): Array<Message> => {
     const messages: Array<Message> = chatStore.getMessages;
     let currentId: Number = 0;
     let currentDate: DateTime | null = null;
@@ -45,7 +46,22 @@ const messages = computed(() => {
         return item;
     });
 
-    return messages as Array<Message>;
+    return messages;
+});
+
+/**
+ * Фильтруем сообщения по типу
+ */
+const filteredMessage = computed((): Array<Message> => {
+    const filters = chatStore.getFilters;
+
+    if (filters.length) {
+        return messages.value.filter((message: Message) => {
+            return filters.includes(message.type as FileType);
+        });
+    } else {
+        return messages.value;
+    }
 });
 
 /**
@@ -93,10 +109,13 @@ onMounted(() => {
 </script>
 
 <template>
-    <perfect-scrollbar class="messages__list my-2 pr-4" v-if="messages.length">
+    <perfect-scrollbar
+        class="messages__list my-2 pr-4"
+        v-if="filteredMessage.length"
+    >
         <div class="messages__wrap">
             <c-message
-                v-for="message in messages"
+                v-for="message in filteredMessage"
                 :key="message.id"
                 :message="message"
             />

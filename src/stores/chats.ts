@@ -7,6 +7,7 @@ import { useToastStore } from '@/stores/toast';
 import { useConfirmStore } from '@/stores/confirm';
 import _ from 'lodash';
 import type { AxiosPromise } from 'axios';
+import type { FileType } from '@/interfaces/file';
 
 const toastStore = useToastStore();
 const confirmStore = useConfirmStore();
@@ -16,6 +17,7 @@ export const useChatStore = defineStore('chat', {
         room: <Room | null>null,
         rooms: [] as Array<Room>,
         messages: [] as Array<Message>,
+        filters: [] as Array<FileType>,
         messageInput: {
             id: 0,
             text: '',
@@ -28,6 +30,7 @@ export const useChatStore = defineStore('chat', {
         getMessages: (state) => state.messages,
         getMessageInput: (state) => state.messageInput,
         getDetailShow: (state) => state.detailShow,
+        getFilters: (state) => state.filters,
     },
     actions: {
         setRoom(room: Room): void {
@@ -74,6 +77,7 @@ export const useChatStore = defineStore('chat', {
                     .get(`/chat/room/${this.room.id}/messages`)
                     .then((response) => {
                         this.messages = response.data.messages;
+                        this.filters = [];
                     })
                     .catch(() => {
                         toastStore.addToast({
@@ -154,6 +158,15 @@ export const useChatStore = defineStore('chat', {
                         type: 'danger',
                     });
                 });
+        },
+        toggleFilter(type: FileType): void {
+            if (this.filters.includes(type)) {
+                _.remove(this.filters, (item) => {
+                    return item === type;
+                });
+            } else {
+                this.filters.push(type);
+            }
         },
     },
 });
