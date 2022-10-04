@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import CIcon from '../icons/cIcon.vue';
+/**
+ * Компонент для манипуляции с сообщениями
+ */
+
 import type { Message } from '@/interfaces/caht';
-import { computed } from 'vue';
-import { useUserStore } from '@/stores/user';
+import CIcon from '@/components/icons/cIcon.vue';
+import { FileType } from '@/interfaces/file';
+import CMessageDownload from '@/components/ui/cMessageDownload.vue';
 import { useChatStore } from '@/stores/chats';
 import { useConfirmStore } from '@/stores/confirm';
 
@@ -12,23 +16,14 @@ import { useConfirmStore } from '@/stores/confirm';
  */
 const props = defineProps<{
     message: Message;
+    my: boolean;
 }>();
 
 /**
  * Загрузка состояний
  */
-const userStore = useUserStore();
 const chatStore = useChatStore();
 const confirmStore = useConfirmStore();
-
-/**
- * Определяем написано ли сообщение
- * текущим пользователем
- * @return {Boolean}
- */
-const isMyMessage = computed((): Boolean => {
-    return props.message.user.id === userStore.getUser?.id;
-});
 
 /**
  * Метод копирования текста сообщения
@@ -60,25 +55,33 @@ const deleteMessage = () => {
 
 <template>
     <div class="message__option">
-        <c-icon
-            name="delete"
-            class="option__item"
-            v-if="isMyMessage"
-            @click.prevent="deleteMessage"
+        <template v-if="my">
+            <c-icon name="delete" class="option__item" @click="deleteMessage" />
+
+            <c-icon
+                name="edit"
+                class="option__item"
+                v-if="message.type === FileType.Text"
+                @click="editMessage"
+            />
+        </template>
+
+        <c-message-download
+            :file="message.file"
+            v-if="message.type !== FileType.Text"
         />
-        <c-icon name="copy" class="option__item" @click.prevent="copyMessage" />
+
         <c-icon
-            name="edit"
+            name="copy"
             class="option__item"
-            v-if="isMyMessage"
-            @click.prevent="editMessage"
+            v-if="message.type === FileType.Text"
+            @click="copyMessage"
         />
     </div>
 </template>
 
 <style lang="scss">
 .message__option {
-    margin: 0 1rem;
     display: flex;
     align-items: center;
     opacity: 0;

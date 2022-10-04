@@ -9,6 +9,7 @@ import { useUserStore } from '@/stores/user';
 import CMessageInfo from '@/components/ui/cMessageInfo.vue';
 import CMessageTime from '@/components/ui/cMessageTime.vue';
 import CMessageDate from '@/components/ui/cMessageDate.vue';
+import CMessageOption from '@/components/ui/cMessageOption.vue';
 
 /**
  * Пареметры компонента
@@ -47,6 +48,7 @@ const my = computed((): boolean => {
 
 <template>
     <c-message-date :date="message.created_at" v-if="message.prev_date" />
+
     <div
         class="message__item mb-3"
         :class="[my ? 'message__item_right' : 'message__item_left']"
@@ -61,7 +63,9 @@ const my = computed((): boolean => {
             class="message__wrap"
             :class="[my ? 'message_right' : 'message_left']"
         >
+            <c-message-option :message="message" :my="my" />
             <c-message-time :time="message.created_at" />
+
             <div
                 class="message py-2 px-2 rounded-3xl"
                 :class="{ message_round: message.prev_current }"
@@ -81,6 +85,12 @@ const my = computed((): boolean => {
     flex-wrap: wrap;
     padding: 0 calc(40px + 0.5rem);
     color: white;
+
+    &:hover {
+        .message__option {
+            opacity: 1;
+        }
+    }
 }
 
 .message__item_right {

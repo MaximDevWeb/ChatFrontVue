@@ -8,6 +8,7 @@ export enum FileType {
     Avatar = 'AVATAR',
     Image = 'IMAGE',
     File = 'FILE',
+    Text = 'TEXT',
 }
 
 export interface FileMessage {
