@@ -88,6 +88,7 @@ const toggleFilter = (filter: FileType) => {
                     messages__icon_active: filters.includes(FileType.Image),
                 }"
             />
+
             <c-icon
                 name="document"
                 class="messages__icon"

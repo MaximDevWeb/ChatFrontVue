@@ -12,6 +12,7 @@ import type { MessageData, MessageId } from '@/interfaces/pusher';
 import CMessage from '@/components/ui/cMessage.vue';
 import { DateTime } from 'luxon';
 import type { FileType } from '@/interfaces/file';
+import CMessagesScroll from '@/components/ui/cMessagesScroll.vue';
 
 /**
  * Загрузка состояний
@@ -106,21 +107,24 @@ onMounted(() => {
         chatStore.updateMessage(data.message);
     });
 });
+
+const scrolledTop = () => {
+    chatStore.loadNextMessages();
+};
 </script>
 
 <template>
-    <perfect-scrollbar
+    <c-messages-scroll
         class="messages__list my-2 pr-4"
         v-if="filteredMessage.length"
+        @scrolledTop="scrolledTop"
     >
-        <div class="messages__wrap">
-            <c-message
-                v-for="message in filteredMessage"
-                :key="message.id"
-                :message="message"
-            />
-        </div>
-    </perfect-scrollbar>
+        <c-message
+            v-for="message in filteredMessage"
+            :key="message.id"
+            :message="message"
+        />
+    </c-messages-scroll>
 
     <div class="messages__list_empty my-2 pr-4" v-else>
         <p class="uppercase">У Вас нет сообщений</p>
@@ -132,42 +136,7 @@ onMounted(() => {
 .messages__list,
 .messages__list_empty {
     position: relative;
-    height: 100%;
-    overflow: auto;
-
-    &:before,
-    &:after {
-        content: '';
-        position: sticky;
-        display: block;
-        height: 20px;
-        z-index: 10;
-    }
-
-    &:before {
-        top: 0;
-        background: linear-gradient(
-            180deg,
-            rgba(22, 23, 25, 1) 0%,
-            rgba(0, 212, 255, 0) 100%
-        );
-    }
-
-    &:after {
-        bottom: 0;
-        background: linear-gradient(
-            0deg,
-            rgba(22, 23, 25, 1) 0%,
-            rgba(0, 212, 255, 0) 100%
-        );
-    }
-}
-
-.messages__wrap {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    min-height: calc(100% - 40px);
+    height: calc(100% - 136px);
 }
 
 .messages__list_empty {

@@ -23,6 +23,7 @@ export const useChatStore = defineStore('chat', {
             text: '',
         },
         detailShow: false,
+        nextLink: null,
     }),
     getters: {
         getRoom: (state) => state.room,
@@ -31,11 +32,13 @@ export const useChatStore = defineStore('chat', {
         getMessageInput: (state) => state.messageInput,
         getDetailShow: (state) => state.detailShow,
         getFilters: (state) => state.filters,
+        isNextLink: (state) => !!state.nextLink,
     },
     actions: {
         setRoom(room: Room): void {
             this.room = room;
             this.detailShow = false;
+            this.nextLink = null;
             this.loadMessages();
         },
         setRoomDetail(isShow: boolean) {
@@ -76,8 +79,28 @@ export const useChatStore = defineStore('chat', {
                 Http.inst
                     .get(`/chat/room/${this.room.id}/messages`)
                     .then((response) => {
-                        this.messages = response.data.messages;
+                        this.messages = response.data.messages.data.reverse();
                         this.filters = [];
+                        this.nextLink = response.data.messages.links.next;
+                    })
+                    .catch(() => {
+                        toastStore.addToast({
+                            title: 'Ошибка загрузки',
+                            message: 'Это не ваш чат',
+                            type: 'danger',
+                        });
+                    });
+            }
+        },
+        loadNextMessages(): void {
+            if (this.nextLink) {
+                Http.inst
+                    .get(this.nextLink)
+                    .then((response) => {
+                        this.messages.unshift(
+                            ...response.data.messages.data.reverse()
+                        );
+                        this.nextLink = response.data.messages.links.next;
                     })
                     .catch(() => {
                         toastStore.addToast({
